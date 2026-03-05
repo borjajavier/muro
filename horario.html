@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MURO - Generador de Horarios</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --info: #3498db;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --touch-min: 44px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 40px rgba(0,0,0,0.1);
+        }
+        
+        @media (min-width: 769px) {
+            .container {
+                border-radius: 0 0 20px 20px;
+                margin: 0 auto 40px;
+                min-height: auto;
+                overflow: hidden;
+            }
+            body {
+                padding: 0 20px 20px;
+            }
+        }
+        
+        /* HEADER CON LOGO */
+        .main-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .main-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+        
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        @media (min-width: 769px) {
+            .logo-container {
+                flex-direction: row;
+                justify-content: space-between;
+                text-align: left;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 10px 20px;
+            }
+        }
+        
+        .logo-wrapper {
+            background: white;
+            padding: 20px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 80px;
+        }
+        
+        .logo-img {
+            height: 40px;
+            width: auto;
+            display: block;
+        }
+        
+        @media (min-width: 769px) {
+            .logo-img {
+                height: 50px;
+            }
+        }
+        
+        .header-text {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .header-title {
+            font-size: 1.5em;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin: 0;
+            opacity: 0.9;
+        }
+        
+        @media (min-width: 769px) {
+            .header-title {
+                font-size: 1.8em;
+            }
+        }
+        
+        /* NAVEGACIÓN */
+        .nav-desktop {
+            display: flex;
+            background: white;
+            border-bottom: 3px solid #ecf0f1;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .nav-mobile {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            padding: 5px 0;
+            border-top: 2px solid #ecf0f1;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 18px 20px;
+            color: #7f8c8d;
+            background: transparent;
+            border: none;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            min-height: var(--touch-min);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -3px;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--accent);
+            background: #f8f9fa;
+        }
+        
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px;
+            color: #7f8c8d;
+            border: none;
+            background: transparent;
+            font-size: 0.75em;
+            cursor: pointer;
+            min-height: var(--touch-min);
+            transition: all 0.2s;
+        }
+        
+        .nav-item.active {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        .nav-icon {
+            font-size: 1.6em;
+            margin-bottom: 2px;
+            transition: transform 0.2s;
+        }
+        
+        .nav-item.active .nav-icon {
+            transform: scale(1.1);
+        }
+        
+        @media (max-width: 768px) {
+            .nav-desktop { display: none; }
+            .nav-mobile { display: flex; }
+            .container { border-radius: 0; margin: 0; }
+            body { padding: 0; padding-bottom: 70px; }
+            .main-header { padding: 20px; }
+            .logo-wrapper { padding: 15px 30px; }
+        }
+        
+        /* CONTENIDO */
+        .content-section {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.3s;
+        }
+        
+        @media (min-width: 769px) {
+            .content-section { padding: 40px; }
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* CARDS */
+        .config-grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        @media (min-width: 769px) {
+            .config-grid {
+                grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+                gap: 25px;
+            }
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        @media (min-width: 769px) {
+            .card { 
+                padding: 25px; 
+            }
+            .card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            }
+        }
+        
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+        
+        /* FORMULARIOS */
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #555;
+            font-size: 0.9em;
+        }
+        
+        input, select, button {
+            min-height: var(--touch-min);
+            font-size: 16px;
+            font-family: inherit;
+        }
+        
+        input[type="text"],
+        input[type="time"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            background: white;
+            transition: all 0.3s;
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+        }
+        
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+            touch-action: manipulation;
+        }
+        
+        button:active {
+            transform: scale(0.96);
+        }
+        
+        .btn-primary { 
+            background: var(--accent); 
+            color: white; 
+            box-shadow: 0 4px 6px rgba(231, 76, 60, 0.3);
+        }
+        .btn-primary:active { box-shadow: 0 2px 4px rgba(231, 76, 60, 0.3); }
+        
+        .btn-success { 
+            background: var(--success); 
+            color: white;
+            box-shadow: 0 4px 6px rgba(39, 174, 96, 0.3);
+        }
+        .btn-danger { 
+            background: var(--danger); 
+            color: white;
+            box-shadow: 0 4px 6px rgba(231, 76, 60, 0.3);
+        }
+        .btn-info { 
+            background: var(--info); 
+            color: white;
+            box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);
+        }
+        .btn-block { width: 100%; }
+        
+        /* EMPLEADOS */
+        .employee-list {
+            max-height: 300px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            background: #f8f9fa;
+            padding: 5px;
+        }
+        
+        .employee-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 5px;
+            background: white;
+            border-radius: 10px;
+            gap: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .emp-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .emp-name {
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 1.05em;
+        }
+        
+        .emp-role {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            margin-top: 2px;
+        }
+        
+        .role-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            color: white;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 1.1em;
+        }
+        
+        .add-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        @media (min-width: 769px) {
+            .add-form {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .add-form input,
+            .add-form select { flex: 1; min-width: 150px; }
+            .add-form button { width: auto; }
+        }
+        
+        /* CHECKBOXES */
+        .checkbox-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 250px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-right: 5px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .checkbox-item:active {
+            background: #e8e8e8;
+        }
+        
+        .checkbox-item.checked {
+            border-color: var(--accent);
+            background: #fdf2f2;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            min-height: 22px;
+            cursor: pointer;
+            accent-color: var(--accent);
+        }
+        
+        /* CALENDARIO */
+        .calendar-header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 16px;
+            border: 2px solid #ecf0f1;
+        }
+        
+        .month-title {
+            font-size: 1.8em;
+            color: var(--primary);
+            font-weight: 800;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        
+        @media (min-width: 769px) {
+            .month-title { font-size: 2.2em; }
+        }
+        
+        .calendar-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 25px;
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            border: 2px solid #ecf0f1;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        @media (min-width: 769px) {
+            .calendar-controls {
+                flex-direction: row;
+                align-items: flex-end;
+                justify-content: center;
+                gap: 15px;
+            }
+            .calendar-controls .input-group { 
+                margin: 0; 
+                min-width: 140px;
+                flex: 0 1 180px;
+            }
+        }
+        
+        .calendar-grid {
+            display: grid;
+            gap: 6px;
+        }
+        
+        @media (min-width: 769px) {
+            .calendar-grid {
+                grid-template-columns: repeat(7, 1fr);
+                gap: 8px;
+            }
+        }
+        
+        .day-header {
+            background: var(--primary);
+            color: white;
+            padding: 12px 5px;
+            text-align: center;
+            font-weight: 700;
+            border-radius: 10px;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        @media (max-width: 768px) {
+            .day-header { display: none; }
+        }
+        
+        .day-cell {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 12px;
+            background: white;
+            position: relative;
+            transition: all 0.2s;
+        }
+        
+        @media (min-width: 769px) {
+            .day-cell { min-height: 150px; }
+            .day-cell:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                border-color: var(--accent);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .day-cell {
+                display: grid;
+                grid-template-columns: 70px 1fr;
+                gap: 15px;
+                align-items: start;
+                margin-bottom: 8px;
+            }
+        }
+        
+        .day-number {
+            font-size: 1.3em;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        @media (max-width: 768px) {
+            .day-number {
+                flex-direction: column;
+                align-items: flex-start;
+                margin-bottom: 0;
+                font-size: 1.6em;
+                border-right: 3px solid #ecf0f1;
+                padding-right: 10px;
+            }
+        }
+        
+        .week-badge {
+            font-size: 0.65em;
+            background: var(--accent);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+        
+        .cell-closed {
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+            border-color: #ef9a9a;
+            color: #c62828;
+        }
+        
+        @media (max-width: 768px) {
+            .cell-closed {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 100px;
+                text-align: center;
+            }
+        }
+        
+        .cell-saturday {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            border-color: #ffd54f;
+        }
+        
+        .shifts-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .shift-block {
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.9em;
+            border-left: 4px solid;
+            line-height: 1.4;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        @media (max-width: 768px) {
+            .shift-block {
+                font-size: 0.95em;
+            }
+        }
+        
+        .shift-1 { 
+            background: #e8f5e9; 
+            border-left-color: var(--success);
+        }
+        .shift-2 { 
+            background: #e3f2fd; 
+            border-left-color: var(--info);
+        }
+        .shift-rest { 
+            background: #ffebee; 
+            border-left-color: var(--danger); 
+            color: #c62828; 
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .shift-title {
+            font-weight: 800;
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .time-badge {
+            font-size: 0.85em;
+            color: #666;
+            display: block;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+        
+        /* LEYENDA */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: white;
+            border-radius: 20px;
+            border: 2px solid #e0e0e0;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .color-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+        }
+        
+        /* ACCIONES */
+        .action-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        
+        @media (min-width: 769px) {
+            .action-bar {
+                flex-direction: row;
+                justify-content: flex-end;
+                flex-wrap: wrap;
+            }
+            .action-bar button { width: auto; }
+        }
+        
+        /* FOOTER */
+        .footer-brand {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+            border-top: 2px solid #ecf0f1;
+            color: #95a5a6;
+            font-size: 0.9em;
+        }
+        
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #2c3e50;
+            color: white;
+            padding: 16px 32px;
+            border-radius: 50px;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 2000;
+            font-size: 0.95em;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            white-space: nowrap;
+            pointer-events: none;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        @media (min-width: 769px) {
+            .toast { bottom: 40px; }
+        }
+        
+        /* SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #bdc3c7;
+            border-radius: 3px;
+        }
+        
+        /* PRINT */
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; margin: 0; }
+            .no-print, .nav-desktop, .nav-mobile { display: none !important; }
+            .main-header { background: #2c3e50 !important; -webkit-print-color-adjust: exact; }
+            .day-cell { break-inside: avoid; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER CON LOGO MURO -->
+        <header class="main-header">
+            <div class="logo-container">
+                <div class="logo-wrapper">
+                    <!-- SOLO EL LOGO - Si no carga, muestra texto automáticamente -->
+                    <img src="logo-muro-solo.png" 
+                         alt="MURO" 
+                         class="logo-img" 
+                         onerror="this.onerror=null; this.outerHTML='<span style=\'font-size: 2.5em; font-weight: 800; color: #2c3e50; letter-spacing: 4px;\'>MURO</span>';">
+                </div>
+                <div class="header-text">
+                    <h1 class="header-title">Sistema de Horarios</h1>
+                    <span style="opacity: 0.8; font-size: 0.9em;">Gestión de Equipo y Turnos</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- NAVEGACIÓN DESKTOP -->
+        <div class="nav-desktop no-print">
+            <button class="tab active" onclick="showTab('config', this)">
+                <span>⚙️</span> Configuración
+            </button>
+            <button class="tab" onclick="showTab('schedule', this)">
+                <span>📅</span> Ver Horario
+            </button>
+        </div>
+
+        <!-- SECCIÓN CONFIGURACIÓN -->
+        <div id="config" class="content-section active">
+            <div class="action-bar no-print">
+                <button class="btn btn-success" onclick="exportConfig()">📥 Exportar Config</button>
+                <button class="btn btn-info" onclick="document.getElementById('importFile').click()">📤 Importar Config</button>
+                <input type="file" id="importFile" style="display:none" accept=".json" onchange="importConfig(event)">
+                <button class="btn btn-danger" onclick="resetDefault()">🔄 Restaurar</button>
+            </div>
+
+            <div class="config-grid">
+                <!-- Empleados -->
+                <div class="card">
+                    <h3>👥 Gestión del Equipo</h3>
+                    <div class="add-form">
+                        <input type="text" id="newEmpName" placeholder="Nombre completo">
+                        <select id="newEmpRole">
+                            <option value="Colorista">🎨 Colorista</option>
+                            <option value="Estilista">✂️ Estilista</option>
+                            <option value="Champúñier">🧴 Champúñier</option>
+                            <option value="Manicurista">💅 Manicurista</option>
+                            <option value="Recepcionista">📋 Recepcionista</option>
+                            <option value="Otro">👤 Otro</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="addEmployee()">➕ Agregar</button>
+                    </div>
+                    <div class="employee-list" id="employeeList"></div>
+                </div>
+
+                <!-- Turnos -->
+                <div class="card">
+                    <h3>🔄 Asignación de Turnos</h3>
+                    <div style="margin-bottom: 20px;">
+                        <div style="font-weight: bold; color: var(--success); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                            <span style="width: 12px; height: 12px; background: var(--success); border-radius: 50%; display: inline-block;"></span>
+                            Turno 1
+                        </div>
+                        <div class="checkbox-list" id="shift1List"></div>
+                    </div>
+                    <div>
+                        <div style="font-weight: bold; color: var(--info); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                            <span style="width: 12px; height: 12px; background: var(--info); border-radius: 50%; display: inline-block;"></span>
+                            Turno 2
+                        </div>
+                        <div class="checkbox-list" id="shift2List"></div>
+                    </div>
+                </div>
+
+                <!-- Horarios -->
+                <div class="card">
+                    <h3>⏰ Configuración Horaria</h3>
+                    <div style="display: grid; gap: 15px;">
+                        <div style="padding: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid var(--success);">
+                            <div style="font-weight: bold; margin-bottom: 10px; color: var(--success);">Lunes a Viernes</div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div class="input-group" style="margin: 0;">
+                                    <label>Entrada</label>
+                                    <input type="time" id="lvStart" value="10:00" onchange="updateConfig()">
+                                </div>
+                                <div class="input-group" style="margin: 0;">
+                                    <label>Salida</label>
+                                    <input type="time" id="lvEnd" value="19:00" onchange="updateConfig()">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="padding: 15px; background: #f8f9fa; border-radius: 10px; border-left: 4px solid var(--warning);">
+                            <div style="font-weight: bold; margin-bottom: 10px; color: var(--warning);">Sábados</div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div class="input-group" style="margin: 0;">
+                                    <label>Entrada</label>
+                                    <input type="time" id="satStart" value="09:30" onchange="updateConfig()">
+                                </div>
+                                <div class="input-group" style="margin: 0;">
+                                    <label>Salida</label>
+                                    <input type="time" id="satEnd" value="14:30" onchange="updateConfig()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rotación -->
+                <div class="card">
+                    <h3>🔄 Sistema de Rotación</h3>
+                    <div class="input-group">
+                        <label>Frecuencia de cambio</label>
+                        <select id="rotWeeks" onchange="updateConfig()">
+                            <option value="1">Cada semana</option>
+                            <option value="2" selected>Cada 2 semanas</option>
+                            <option value="3">Cada 3 semanas</option>
+                            <option value="4">Cada mes</option>
+                        </select>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div class="input-group">
+                            <label>Libra T1 (Fase 1)</label>
+                            <select id="rest1" onchange="updateConfig()">
+                                <option value="1" selected>Lunes</option>
+                                <option value="2">Martes</option>
+                                <option value="3">Miércoles</option>
+                                <option value="4">Jueves</option>
+                                <option value="5">Viernes</option>
+                                <option value="6">Sábado</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Libra T2 (Fase 1)</label>
+                            <select id="rest2" onchange="updateConfig()">
+                                <option value="1">Lunes</option>
+                                <option value="6" selected>Sábado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; padding: 15px; background: #fff3cd; border-radius: 8px; font-size: 0.9em; color: #856404; border-left: 4px solid #ffc107;">
+                        💡 <strong>Nota:</strong> En la fase 2, los días libres se invierten automáticamente entre turnos.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN HORARIO -->
+        <div id="schedule" class="content-section">
+            <div class="calendar-controls no-print">
+                <div class="input-group">
+                    <label>Mes</label>
+                    <select id="monthSelect" onchange="generateSchedule()">
+                        <option value="0">Enero</option>
+                        <option value="1">Febrero</option>
+                        <option value="2">Marzo</option>
+                        <option value="3">Abril</option>
+                        <option value="4">Mayo</option>
+                        <option value="5">Junio</option>
+                        <option value="6">Julio</option>
+                        <option value="7">Agosto</option>
+                        <option value="8">Septiembre</option>
+                        <option value="9">Octubre</option>
+                        <option value="10">Noviembre</option>
+                        <option value="11">Diciembre</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Año</label>
+                    <select id="yearSelect" onchange="generateSchedule()"></select>
+                </div>
+                <button class="btn btn-primary" onclick="generateSchedule()" style="min-height: 48px;">
+                    🔄 Generar
+                </button>
+                <button class="btn btn-success" onclick="window.print()" style="min-height: 48px;">
+                    🖨️ PDF / Imprimir
+                </button>
+            </div>
+
+            <div class="calendar-header">
+                <div class="month-title" id="monthTitle">Horario Mensual</div>
+                <div class="legend" id="legend"></div>
+            </div>
+
+            <div class="calendar-grid" id="calendar">
+                <div class="day-header">Lunes</div>
+                <div class="day-header">Martes</div>
+                <div class="day-header">Miércoles</div>
+                <div class="day-header">Jueves</div>
+                <div class="day-header">Viernes</div>
+                <div class="day-header">Sábado</div>
+                <div class="day-header">Domingo</div>
+            </div>
+
+            <div class="footer-brand no-print">
+                <div style="font-size: 1.2em; font-weight: 600; letter-spacing: 2px; color: #2c3e50; margin-bottom: 5px;">MURO</div>
+                <div>Sistema de Gestión de Horarios © 2026</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVEGACIÓN MÓVIL -->
+    <div class="nav-mobile no-print">
+        <button class="nav-item active" onclick="showTab('config', this)">
+            <span class="nav-icon">⚙️</span>
+            <span>Ajustes</span>
+        </button>
+        <button class="nav-item" onclick="showTab('schedule', this)">
+            <span class="nav-icon">📅</span>
+            <span>Horario</span>
+        </button>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // CONFIGURACIÓN INICIAL
+        let config = {
+            employees: [
+                {id: 1, name: 'Ernesto', role: 'Colorista', shift: 1},
+                {id: 2, name: 'Judith', role: 'Estilista', shift: 1},
+                {id: 3, name: 'Rhizza', role: 'Champúñier', shift: 1},
+                {id: 4, name: 'Randy', role: 'Champúñier', shift: 1},
+                {id: 5, name: 'Yis', role: 'Manicurista', shift: 1},
+                {id: 6, name: 'Eva', role: 'Recepcionista', shift: 1},
+                {id: 7, name: 'Davide', role: 'Estilista', shift: 2},
+                {id: 8, name: 'Genesis', role: 'Champúñier', shift: 2},
+                {id: 9, name: 'Esther', role: 'Colorista', shift: 2},
+                {id: 10, name: 'Gigi', role: 'Manicurista', shift: 2},
+                {id: 11, name: 'Luzma', role: 'Colorista', shift: 2}
+            ],
+            schedules: { lvStart: '10:00', lvEnd: '19:00', satStart: '09:30', satEnd: '14:30' },
+            rotation: { weeks: 2, rest1: 1, rest2: 6 }
+        };
+
+        const roles = {
+            'Colorista': '#e74c3c', 'Estilista': '#1abc9c', 'Champúñier': '#3498db',
+            'Manicurista': '#f39c12', 'Recepcionista': '#9b59b6', 'Otro': '#95a5a6'
+        };
+
+        // INICIALIZAR
+        window.onload = function() {
+            const saved = localStorage.getItem('muroHorarioConfig');
+            if(saved) config = JSON.parse(saved);
+            
+            const ys = document.getElementById('yearSelect');
+            const cy = new Date().getFullYear();
+            for(let i = cy-1; i <= cy+3; i++) {
+                const o = document.createElement('option');
+                o.value = i; o.text = i;
+                if(i === cy) o.selected = true;
+                ys.appendChild(o);
+            }
+            document.getElementById('monthSelect').value = new Date().getMonth();
+            
+            // Setear valores guardados
+            document.getElementById('lvStart').value = config.schedules.lvStart;
+            document.getElementById('lvEnd').value = config.schedules.lvEnd;
+            document.getElementById('satStart').value = config.schedules.satStart;
+            document.getElementById('satEnd').value = config.schedules.satEnd;
+            document.getElementById('rotWeeks').value = config.rotation.weeks;
+            document.getElementById('rest1').value = config.rotation.rest1;
+            document.getElementById('rest2').value = config.rotation.rest2;
+            
+            renderAll();
+        };
+
+        function showTab(tab, btn) {
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(tab).classList.add('active');
+            
+            document.querySelectorAll('.tab, .nav-item').forEach(t => t.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+            
+            const idx = tab === 'config' ? 0 : 1;
+            document.querySelectorAll('.tab')[idx]?.classList.add('active');
+            document.querySelectorAll('.nav-item')[idx]?.classList.add('active');
+            
+            if(tab === 'schedule') generateSchedule();
+        }
+
+        function renderAll() {
+            // Lista empleados
+            const el = document.getElementById('employeeList');
+            el.innerHTML = '';
+            config.employees.forEach(emp => {
+                const d = document.createElement('div');
+                d.className = 'employee-item';
+                d.innerHTML = `
+                    <div class="emp-info">
+                        <div class="emp-name">${emp.name}</div>
+                        <div class="emp-role">
+                            <span class="role-badge" style="background: ${roles[emp.role]}">${emp.role}</span>
+                            Turno ${emp.shift}
+                        </div>
+                    </div>
+                    <button class="btn btn-icon btn-danger" onclick="deleteEmp(${emp.id})">🗑</button>
+                `;
+                el.appendChild(d);
+            });
+
+            // Selectores turno
+            const s1 = document.getElementById('shift1List');
+            const s2 = document.getElementById('shift2List');
+            s1.innerHTML = ''; s2.innerHTML = '';
+            
+            config.employees.forEach(emp => {
+                const div = document.createElement('div');
+                div.className = 'checkbox-item';
+                if(emp.shift === 1) div.classList.add('checked');
+                
+                div.innerHTML = `
+                    <input type="checkbox" ${emp.shift === 1 ? 'checked' : ''} 
+                           onchange="toggleShift(${emp.id}, this.checked)"
+                           id="c${emp.id}">
+                    <label for="c${emp.id}" style="flex: 1; font-weight: 500;">${emp.name}</label>
+                    <span class="role-badge" style="background: ${roles[emp.role]}; font-size: 0.65em;">${emp.role.substring(0,3)}</span>
+                `;
+                div.onclick = function(e) {
+                    if(e.target.tagName !== 'INPUT' && e.target.tagName !== 'LABEL') {
+                        const cb = this.querySelector('input');
+                        cb.checked = !cb.checked;
+                        toggleShift(emp.id, cb.checked);
+                    }
+                };
+                
+                if(emp.shift === 1) s1.appendChild(div);
+                else s2.appendChild(div);
+            });
+        }
+
+        function addEmployee() {
+            const n = document.getElementById('newEmpName').value.trim();
+            const r = document.getElementById('newEmpRole').value;
+            if(!n) return showToast('⚠️ Introduce un nombre');
+            
+            config.employees.push({
+                id: Date.now(),
+                name: n,
+                role: r,
+                shift: 1
+            });
+            document.getElementById('newEmpName').value = '';
+            save();
+            renderAll();
+            showToast('✅ Empleado agregado');
+        }
+
+        function deleteEmp(id) {
+            if(confirm('¿Eliminar este empleado?')) {
+                config.employees = config.employees.filter(e => e.id !== id);
+                save();
+                renderAll();
+                showToast('🗑️ Empleado eliminado');
+            }
+        }
+
+        function toggleShift(id, toShift1) {
+            const emp = config.employees.find(e => e.id === id);
+            emp.shift = toShift1 ? 1 : 2;
+            save();
+            renderAll();
+        }
+
+        function updateConfig() {
+            config.schedules.lvStart = document.getElementById('lvStart').value;
+            config.schedules.lvEnd = document.getElementById('lvEnd').value;
+            config.schedules.satStart = document.getElementById('satStart').value;
+            config.schedules.satEnd = document.getElementById('satEnd').value;
+            config.rotation.weeks = parseInt(document.getElementById('rotWeeks').value);
+            config.rotation.rest1 = parseInt(document.getElementById('rest1').value);
+            config.rotation.rest2 = parseInt(document.getElementById('rest2').value);
+            save();
+            showToast('💾 Configuración guardada');
+        }
+
+        function generateSchedule() {
+            const m = parseInt(document.getElementById('monthSelect').value);
+            const y = parseInt(document.getElementById('yearSelect').value);
+            const cal = document.getElementById('calendar');
+            
+            const headers = Array.from(cal.querySelectorAll('.day-header'));
+            cal.innerHTML = '';
+            headers.forEach(h => cal.appendChild(h));
+            
+            const months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+            document.getElementById('monthTitle').textContent = `${months[m]} ${y}`;
+            
+            const leg = document.getElementById('legend');
+            leg.innerHTML = '';
+            Object.entries(roles).forEach(([r,c]) => {
+                if(config.employees.some(e => e.role === r)) {
+                    leg.innerHTML += `<div class="legend-item"><div class="color-dot" style="background: ${c}"></div>${r}</div>`;
+                }
+            });
+            [['#27ae60','Turno 1'],['#2980b9','Turno 2'],['#e74c3c','Libre']].forEach(([c,t]) => {
+                leg.innerHTML += `<div class="legend-item"><div class="color-dot" style="background: ${c}"></div>${t}</div>`;
+            });
+
+            const fd = new Date(y, m, 1);
+            const ld = new Date(y, m + 1, 0);
+            const dim = ld.getDate();
+            let sd = fd.getDay() - 1;
+            if(sd === -1) sd = 6;
+            
+            const t1 = config.employees.filter(e => e.shift === 1);
+            const t2 = config.employees.filter(e => e.shift === 2);
+            
+            for(let i = 0; i < sd; i++) {
+                const d = document.createElement('div');
+                d.className = 'day-cell';
+                d.style.background = '#f8f9fa';
+                if(window.innerWidth > 768) cal.appendChild(d);
+            }
+            
+            for(let day = 1; day <= dim; day++) {
+                const date = new Date(y, m, day);
+                const wd = date.getDay();
+                const wn = getWeek(date);
+                const phase = Math.floor((wn - 1) / config.rotation.weeks) % 2;
+                
+                const cell = document.createElement('div');
+                cell.className = 'day-cell';
+                
+                if(wd === 0) {
+                    cell.className += ' cell-closed';
+                    cell.innerHTML = `
+                        <div class="day-number">${day}<span class="week-badge">S${wn}</span></div>
+                        <div style="grid-column: 2; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                            <span style="font-size: 2em;">🔒</span>
+                            <span style="font-weight: bold; margin-top: 5px;">CERRADO</span>
+                        </div>
+                    `;
+                } else {
+                    const r1 = (wd === config.rotation.rest1 && phase === 0) || (wd === config.rotation.rest2 && phase === 1);
+                    const r2 = (wd === config.rotation.rest2 && phase === 0) || (wd === config.rotation.rest1 && phase === 1);
+                    
+                    if(wd === 6) cell.classList.add('cell-saturday');
+                    
+                    let html = `<div class="day-number">${day}<span class="week-badge">S${wn}</span></div>`;
+                    html += `<div class="shifts-container">`;
+                    
+                    if(r1) {
+                        html += `<div class="shift-block shift-rest"><span class="shift-title">Turno 1 Libre</span>Descanso</div>`;
+                        html += createShift(t2, 'shift-2', wd === 6);
+                    } else if(r2) {
+                        html += createShift(t1, 'shift-1', wd === 6);
+                        html += `<div class="shift-block shift-rest"><span class="shift-title">Turno 2 Libre</span>Descanso</div>`;
+                    } else {
+                        html += createShift(t1, 'shift-1', wd === 6);
+                        html += createShift(t2, 'shift-2', wd === 6);
+                    }
+                    html += `</div>`;
+                    cell.innerHTML = html;
+                }
+                cal.appendChild(cell);
+            }
+        }
+
+        function createShift(emps, cls, isSat) {
+            const time = isSat ? `${config.schedules.satStart}-${config.schedules.satEnd}` : `${config.schedules.lvStart}-${config.schedules.lvEnd}`;
+            const names = emps.map(e => e.name).join(', ');
+            const badges = emps.map(e => `<span class="role-badge" style="background: ${roles[e.role]}; font-size: 0.6em; margin: 2px 2px 0 0; display: inline-block;">${e.role.substring(0,3)}</span>`).join('');
+            const title = cls === 'shift-1' ? 'Turno 1' : 'Turno 2';
+            
+            return `
+                <div class="shift-block ${cls}">
+                    <span class="shift-title">${title}</span>
+                    ${names}
+                    <span class="time-badge">⏰ ${time}</span>
+                    <div style="margin-top: 6px; line-height: 1.2;">${badges}</div>
+                </div>
+            `;
+        }
+
+        function getWeek(d) {
+            const dt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+            const dn = dt.getUTCDay() || 7;
+            dt.setUTCDate(dt.getUTCDate() + 4 - dn);
+            const ys = new Date(Date.UTC(dt.getUTCFullYear(),0,1));
+            return Math.ceil((((dt - ys) / 86400000) + 1)/7);
+        }
+
+        function save() {
+            localStorage.setItem('muroHorarioConfig', JSON.stringify(config));
+        }
+
+        function exportConfig() {
+            const data = JSON.stringify(config, null, 2);
+            const blob = new Blob([data], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `muro_horario_config_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            showToast('📥 Configuración exportada');
+        }
+
+        function importConfig(e) {
+            const f = e.target.files[0];
+            if(!f) return;
+            const r = new FileReader();
+            r.onload = function(ev) {
+                try {
+                    const data = JSON.parse(ev.target.result);
+                    if(data.employees) {
+                        config = data;
+                        save();
+                        location.reload();
+                    }
+                } catch(err) {
+                    showToast('❌ Error al cargar');
+                }
+            };
+            r.readAsText(f);
+            e.target.value = '';
+        }
+
+        function resetDefault() {
+            if(confirm('¿Restaurar configuración original?')) {
+                localStorage.removeItem('muroHorarioConfig');
+                location.reload();
+            }
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        window.addEventListener('resize', () => {
+            setTimeout(() => {
+                if(document.getElementById('schedule').classList.contains('active')) {
+                    generateSchedule();
+                }
+            }, 250);
+        });
+    </script>
+</body>
+</html>
