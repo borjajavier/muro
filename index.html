@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MURO Pro - Sistema Completo de Horarios</title>
+    <title>MURO Pro - Sistema de Horarios por Roles</title>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         :root {
@@ -18,7 +18,6 @@
             --dark: #2c3e50;
             --touch-min: 44px;
             
-            /* Variables dinámicas */
             --bg-body: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             --bg-container: white;
             --bg-card: white;
@@ -26,10 +25,6 @@
             --text-secondary: #555;
             --border-color: #e0e0e0;
             --bg-header: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            
-            /* Colores turnos (personalizables) */
-            --shift1-color: #27ae60;
-            --shift2-color: #2980b9;
         }
 
         [data-theme="dark"] {
@@ -42,12 +37,7 @@
             --bg-header: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -69,20 +59,12 @@
         }
         
         @media (min-width: 769px) {
-            .container {
-                border-radius: 0 0 20px 20px;
-                margin: 0 auto 40px;
-                min-height: auto;
-                overflow: hidden;
-            }
+            .container { border-radius: 0 0 20px 20px; margin: 0 auto 40px; min-height: auto; overflow: hidden; }
             body { padding: 0 20px 20px; }
         }
 
-        [data-theme="dark"] .container {
-            box-shadow: 0 0 40px rgba(0,0,0,0.5);
-        }
+        [data-theme="dark"] .container { box-shadow: 0 0 40px rgba(0,0,0,0.5); }
         
-        /* HEADER */
         .main-header {
             background: var(--bg-header);
             color: white;
@@ -96,10 +78,8 @@
         .main-header::before {
             content: '';
             position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 300px;
-            height: 300px;
+            top: -50%; right: -10%;
+            width: 300px; height: 300px;
             background: rgba(255,255,255,0.05);
             border-radius: 50%;
         }
@@ -135,21 +115,10 @@
             min-height: 80px;
         }
         
-        .logo-img {
-            height: 40px;
-            width: auto;
-            display: block;
-        }
+        .logo-img { height: 40px; width: auto; display: block; }
+        @media (min-width: 769px) { .logo-img { height: 50px; } }
         
-        @media (min-width: 769px) {
-            .logo-img { height: 50px; }
-        }
-        
-        .header-text {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
+        .header-text { display: flex; flex-direction: column; gap: 5px; }
         
         .header-title {
             font-size: 1.5em;
@@ -159,22 +128,18 @@
             opacity: 0.9;
         }
         
-        @media (min-width: 769px) {
-            .header-title { font-size: 1.8em; }
-        }
+        @media (min-width: 769px) { .header-title { font-size: 1.8em; } }
 
         .header-actions {
             position: absolute;
-            top: 15px;
-            right: 15px;
+            top: 15px; right: 15px;
             display: flex;
             gap: 10px;
             z-index: 10;
         }
 
         .btn-icon-header {
-            width: 40px;
-            height: 40px;
+            width: 40px; height: 40px;
             border-radius: 50%;
             border: 2px solid rgba(255,255,255,0.3);
             background: rgba(255,255,255,0.1);
@@ -187,12 +152,8 @@
             font-size: 1.2em;
         }
 
-        .btn-icon-header:hover {
-            background: rgba(255,255,255,0.2);
-            transform: scale(1.1);
-        }
+        .btn-icon-header:hover { background: rgba(255,255,255,0.2); transform: scale(1.1); }
         
-        /* NAVEGACIÓN */
         .nav-desktop {
             display: flex;
             background: var(--bg-container);
@@ -205,14 +166,15 @@
             display: none;
             position: fixed;
             bottom: 0;
-            left: 0;
-            right: 0;
+            left: 0; right: 0;
             background: var(--bg-container);
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
             z-index: 1000;
             padding: 5px 0;
             border-top: 2px solid var(--border-color);
         }
+
+        .nav-desktop.hidden-tab, .nav-mobile.hidden-tab { display: none !important; }
         
         .tab {
             flex: 1;
@@ -265,15 +227,8 @@
 
         [data-theme="dark"] .nav-item { color: #95a5a6; }
         
-        .nav-icon {
-            font-size: 1.6em;
-            margin-bottom: 2px;
-            transition: transform 0.2s;
-        }
-        
-        .nav-item.active .nav-icon {
-            transform: scale(1.1);
-        }
+        .nav-icon { font-size: 1.6em; margin-bottom: 2px; transition: transform 0.2s; }
+        .nav-item.active .nav-icon { transform: scale(1.1); }
         
         @media (max-width: 768px) {
             .nav-desktop { display: none; }
@@ -284,27 +239,20 @@
             .header-actions { top: 10px; right: 10px; }
         }
         
-        /* CONTENIDO */
         .content-section {
             display: none;
             padding: 20px;
             animation: fadeIn 0.3s;
         }
         
-        @media (min-width: 769px) {
-            .content-section { padding: 40px; }
-        }
-        
-        .content-section.active {
-            display: block;
-        }
+        @media (min-width: 769px) { .content-section { padding: 40px; } }
+        .content-section.active { display: block; }
         
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* CARDS */
         .config-grid {
             display: grid;
             gap: 20px;
@@ -327,9 +275,7 @@
             color: var(--text-primary);
         }
 
-        [data-theme="dark"] .card {
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
+        [data-theme="dark"] .card { box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
         
         @media (min-width: 769px) {
             .card { padding: 25px; }
@@ -337,9 +283,7 @@
                 transform: translateY(-2px);
                 box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             }
-            [data-theme="dark"] .card:hover {
-                box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-            }
+            [data-theme="dark"] .card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
         }
         
         .card h3 {
@@ -353,10 +297,7 @@
             border-bottom: 2px solid var(--border-color);
         }
         
-        /* FORMULARIOS */
-        .input-group {
-            margin-bottom: 15px;
-        }
+        .input-group { margin-bottom: 15px; }
         
         .input-group label {
             display: block;
@@ -387,10 +328,7 @@
             transition: all 0.3s;
         }
 
-        textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
+        textarea { min-height: 80px; resize: vertical; }
         
         input:focus, select:focus, textarea:focus {
             border-color: var(--accent);
@@ -415,10 +353,7 @@
             color: white; 
             box-shadow: 0 4px 6px rgba(231, 76, 60, 0.3);
         }
-        .btn-secondary {
-            background: #95a5a6;
-            color: white;
-        }
+        .btn-secondary { background: #95a5a6; color: white; }
         .btn-success { 
             background: var(--success); 
             color: white;
@@ -434,10 +369,7 @@
             color: white;
             box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);
         }
-        .btn-warning {
-            background: var(--warning);
-            color: white;
-        }
+        .btn-warning { background: var(--warning); color: white; }
         .btn-block { width: 100%; }
         .btn-outline {
             background: transparent;
@@ -449,12 +381,48 @@
             border-color: var(--accent);
             color: white;
         }
-        .btn-sm {
-            padding: 8px 16px;
-            font-size: 0.9em;
-        }
+        .btn-sm { padding: 8px 16px; font-size: 0.9em; }
         
-        /* EMPLEADOS */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            background: rgba(0,0,0,0.02);
+            border-radius: 10px;
+            border: 2px solid var(--border-color);
+        }
+
+        [data-theme="dark"] .toggle-container { background: rgba(255,255,255,0.05); }
+
+        .toggle-label { font-weight: 600; color: var(--text-primary); }
+        .toggle-desc { font-size: 0.85em; color: var(--text-secondary); margin-top: 4px; }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 32px;
+            background: #ccc;
+            border-radius: 32px;
+            cursor: pointer;
+            transition: background 0.3s;
+            flex-shrink: 0;
+            margin-left: 15px;
+        }
+
+        .toggle-switch.active { background: var(--success); }
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 4px; left: 4px;
+            width: 24px; height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .toggle-switch.active::after { transform: translateX(28px); }
+        
         .employee-list {
             max-height: 300px;
             overflow-y: auto;
@@ -465,9 +433,7 @@
             padding: 5px;
         }
 
-        [data-theme="dark"] .employee-list {
-            background: rgba(255,255,255,0.05);
-        }
+        [data-theme="dark"] .employee-list { background: rgba(255,255,255,0.05); }
         
         .employee-item {
             display: flex;
@@ -481,10 +447,7 @@
             border: 1px solid var(--border-color);
         }
         
-        .emp-info {
-            flex: 1;
-            min-width: 0;
-        }
+        .emp-info { flex: 1; min-width: 0; }
         
         .emp-name {
             font-weight: 600;
@@ -512,8 +475,7 @@
         }
         
         .btn-icon {
-            width: 40px;
-            height: 40px;
+            width: 40px; height: 40px;
             padding: 0;
             display: flex;
             align-items: center;
@@ -530,58 +492,11 @@
         }
         
         @media (min-width: 769px) {
-            .add-form {
-                flex-direction: row;
-                flex-wrap: wrap;
-            }
-            .add-form input,
-            .add-form select { flex: 1; min-width: 150px; }
+            .add-form { flex-direction: row; flex-wrap: wrap; }
+            .add-form input, .add-form select { flex: 1; min-width: 150px; }
             .add-form button { width: auto; }
         }
         
-        /* CHECKBOXES */
-        .checkbox-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            max-height: 250px;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            padding-right: 5px;
-        }
-        
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 15px;
-            background: rgba(0,0,0,0.02);
-            border-radius: 10px;
-            border: 2px solid transparent;
-            transition: all 0.2s;
-            cursor: pointer;
-            color: var(--text-primary);
-        }
-
-        [data-theme="dark"] .checkbox-item {
-            background: rgba(255,255,255,0.05);
-        }
-        
-        .checkbox-item:active { background: rgba(0,0,0,0.05); }
-        .checkbox-item.checked {
-            border-color: var(--accent);
-            background: rgba(231, 76, 60, 0.1);
-        }
-        
-        .checkbox-item input[type="checkbox"] {
-            width: 22px;
-            height: 22px;
-            min-height: 22px;
-            cursor: pointer;
-            accent-color: var(--accent);
-        }
-        
-        /* CALENDARIO */
         .calendar-header {
             text-align: center;
             margin-bottom: 25px;
@@ -592,9 +507,7 @@
             color: var(--text-primary);
         }
 
-        [data-theme="dark"] .calendar-header {
-            background: rgba(255,255,255,0.05);
-        }
+        [data-theme="dark"] .calendar-header { background: rgba(255,255,255,0.05); }
         
         .month-title {
             font-size: 1.8em;
@@ -604,9 +517,7 @@
             letter-spacing: 1px;
         }
         
-        @media (min-width: 769px) {
-            .month-title { font-size: 2.2em; }
-        }
+        @media (min-width: 769px) { .month-title { font-size: 2.2em; } }
         
         .calendar-controls {
             display: flex;
@@ -652,10 +563,7 @@
                 grid-template-columns: repeat(7, 1fr);
                 gap: 8px;
             }
-            .calendar-grid.week-view {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
+            .calendar-grid.week-view { grid-template-columns: 1fr; gap: 15px; }
         }
 
         .calendar-grid.list-view {
@@ -664,19 +572,13 @@
             gap: 10px;
         }
 
-        .calendar-grid.list-view .day-header {
-            display: none;
-        }
-
+        .calendar-grid.list-view .day-header { display: none; }
         .calendar-grid.week-view .day-cell {
             min-height: auto;
             display: grid;
             grid-template-columns: 100px 1fr;
         }
-
-        .calendar-grid.week-view .day-header {
-            display: none;
-        }
+        .calendar-grid.week-view .day-header { display: none; }
 
         .week-day-label {
             font-weight: bold;
@@ -689,16 +591,8 @@
             padding-right: 15px;
         }
 
-        .week-day-label .day-name {
-            font-size: 0.9em;
-            text-transform: uppercase;
-            opacity: 0.7;
-        }
-
-        .week-day-label .day-num {
-            font-size: 2em;
-            line-height: 1;
-        }
+        .week-day-label .day-name { font-size: 0.9em; text-transform: uppercase; opacity: 0.7; }
+        .week-day-label .day-num { font-size: 2em; line-height: 1; }
 
         .list-item {
             background: var(--bg-card);
@@ -711,11 +605,7 @@
             transition: all 0.2s;
         }
 
-        .list-item:hover {
-            border-color: var(--accent);
-            transform: translateX(5px);
-        }
-
+        .list-item:hover { border-color: var(--accent); transform: translateX(5px); }
         .list-date {
             font-weight: bold;
             color: var(--accent);
@@ -737,9 +627,7 @@
             letter-spacing: 1px;
         }
         
-        @media (max-width: 768px) {
-            .day-header:not(.force-show) { display: none; }
-        }
+        @media (max-width: 768px) { .day-header:not(.force-show) { display: none; } }
         
         .day-cell {
             border: 2px solid var(--border-color);
@@ -762,10 +650,9 @@
         
         @media (max-width: 768px) {
             .day-cell:not(.week-view-day):not(.list-view-day) {
-                display: grid;
-                grid-template-columns: 70px 1fr;
-                gap: 15px;
-                align-items: start;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
                 margin-bottom: 8px;
             }
         }
@@ -780,15 +667,17 @@
             align-items: center;
         }
         
+        .day-name-mobile {
+            font-size: 0.7em;
+            text-transform: uppercase;
+            opacity: 0.7;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: none;
+        }
+
         @media (max-width: 768px) {
-            .day-number:not(.week-view-number) {
-                flex-direction: column;
-                align-items: flex-start;
-                margin-bottom: 0;
-                font-size: 1.6em;
-                border-right: 3px solid var(--border-color);
-                padding-right: 10px;
-            }
+            .day-name-mobile { display: block; }
         }
         
         .week-badge {
@@ -800,7 +689,6 @@
             font-weight: 600;
         }
         
-        /* DESTACAR DÍA ACTUAL */
         .day-cell.today {
             border: 3px solid var(--accent) !important;
             box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.1);
@@ -847,16 +735,6 @@
             color: #e1bee7 !important;
         }
         
-        @media (max-width: 768px) {
-            .cell-closed, .cell-holiday {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                min-height: 100px;
-                text-align: center;
-            }
-        }
-        
         .cell-saturday {
             background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
             border-color: #ffd54f;
@@ -867,59 +745,57 @@
             border-color: #f57f17;
         }
         
-        .shifts-container {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .shift-block {
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 0.9em;
-            border-left: 4px solid;
-            line-height: 1.4;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        .role-section {
+            margin-bottom: 12px;
+            padding: 10px;
             background: rgba(0,0,0,0.02);
+            border-radius: 8px;
+            border-left: 4px solid;
         }
 
-        [data-theme="dark"] .shift-block {
-            background: rgba(255,255,255,0.05);
-        }
+        [data-theme="dark"] .role-section { background: rgba(255,255,255,0.05); }
         
-        @media (max-width: 768px) {
-            .shift-block { font-size: 0.95em; }
-        }
+        .role-section:last-child { margin-bottom: 0; }
         
-        .shift-1 { border-left-color: var(--shift1-color); }
-        .shift-2 { border-left-color: var(--shift2-color); }
-        .shift-rest { 
-            border-left-color: var(--danger); 
-            color: var(--accent); 
-            font-weight: bold;
-            text-align: center;
-            background: rgba(231, 76, 60, 0.1) !important;
-        }
-        
-        .shift-title {
-            font-weight: 800;
-            display: block;
+        .role-title {
+            font-weight: 700;
+            font-size: 0.9em;
             margin-bottom: 6px;
-            font-size: 0.95em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: var(--text-primary);
         }
         
-        .time-badge {
+        .role-staff {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
             font-size: 0.85em;
-            color: var(--text-secondary);
-            display: block;
-            margin-top: 6px;
+        }
+        
+        .staff-name {
+            padding: 4px 10px;
+            background: white;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
             font-weight: 500;
         }
 
-        /* NOTAS Y VACACIONES */
+        [data-theme="dark"] .staff-name {
+            background: #1e1e1e;
+            border-color: #404040;
+        }
+        
+        .staff-resting {
+            opacity: 0.4;
+            text-decoration: line-through;
+            background: rgba(231, 76, 60, 0.1);
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+        
         .day-note {
             margin-top: 8px;
             padding: 6px 10px;
@@ -946,10 +822,8 @@
 
         .btn-note {
             position: absolute;
-            top: 5px;
-            right: 5px;
-            width: 30px;
-            height: 30px;
+            top: 5px; right: 5px;
+            width: 30px; height: 30px;
             border-radius: 50%;
             background: rgba(0,0,0,0.1);
             border: none;
@@ -962,24 +836,17 @@
             transition: all 0.2s;
         }
 
-        .day-cell:hover .btn-note {
-            opacity: 1;
-        }
-
+        .day-cell:hover .btn-note { opacity: 1; }
         .btn-note.has-note {
             opacity: 1;
             background: #ffc107;
             color: #000;
         }
 
-        /* MODAL */
         .modal-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.5);
             z-index: 3000;
             align-items: center;
@@ -987,9 +854,7 @@
             padding: 20px;
         }
 
-        .modal-overlay.active {
-            display: flex;
-        }
+        .modal-overlay.active { display: flex; }
 
         .modal-content {
             background: var(--bg-container);
@@ -1017,31 +882,21 @@
             border-bottom: 2px solid var(--border-color);
         }
 
-        .modal-title {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: var(--text-primary);
-        }
-
+        .modal-title { font-size: 1.3em; font-weight: bold; color: var(--text-primary); }
         .modal-close {
             background: none;
             border: none;
             font-size: 1.5em;
             cursor: pointer;
             color: var(--text-secondary);
-            width: 40px;
-            height: 40px;
+            width: 40px; height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
         }
+        .modal-close:hover { background: rgba(0,0,0,0.1); }
 
-        .modal-close:hover {
-            background: rgba(0,0,0,0.1);
-        }
-
-        /* VACACIONES EN CONFIG */
         .vacation-item {
             background: rgba(255, 152, 0, 0.1);
             border: 1px solid #ff9800;
@@ -1053,18 +908,9 @@
             align-items: center;
         }
 
-        .vacation-info {
-            font-size: 0.95em;
-            color: var(--text-primary);
-        }
-
-        .vacation-dates {
-            font-size: 0.85em;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
+        .vacation-info { font-size: 0.95em; color: var(--text-primary); }
+        .vacation-dates { font-size: 0.85em; color: var(--text-secondary); margin-top: 4px; }
         
-        /* LEYENDA */
         .legend {
             display: flex;
             flex-wrap: wrap;
@@ -1086,27 +932,11 @@
             color: var(--text-secondary);
         }
         
-        .color-dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-        }
+        .color-dot { width: 14px; height: 14px; border-radius: 50%; }
 
-        .color-picker-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        input[type="color"] {
-            width: 60px;
-            height: 40px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
+        .color-picker-wrapper { display: flex; align-items: center; gap: 10px; }
+        input[type="color"] { width: 60px; height: 40px; border: none; border-radius: 8px; cursor: pointer; }
         
-        /* ACCIONES */
         .action-bar {
             display: flex;
             flex-direction: column;
@@ -1115,15 +945,10 @@
         }
         
         @media (min-width: 769px) {
-            .action-bar {
-                flex-direction: row;
-                justify-content: flex-end;
-                flex-wrap: wrap;
-            }
+            .action-bar { flex-direction: row; justify-content: flex-end; flex-wrap: wrap; }
             .action-bar button { width: auto; }
         }
         
-        /* SECCIÓN FESTIVOS */
         .holiday-list {
             display: flex;
             flex-wrap: wrap;
@@ -1145,8 +970,7 @@
         .holiday-tag button {
             background: rgba(255,255,255,0.3);
             border: none;
-            width: 20px;
-            height: 20px;
+            width: 20px; height: 20px;
             border-radius: 50%;
             cursor: pointer;
             color: white;
@@ -1158,7 +982,6 @@
             min-height: auto;
         }
 
-        /* ESTADÍSTICAS */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -1182,16 +1005,8 @@
             letter-spacing: 1px;
         }
 
-        .stat-value {
-            font-size: 2em;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .stat-detail {
-            font-size: 0.85em;
-            opacity: 0.9;
-        }
+        .stat-value { font-size: 2em; font-weight: bold; margin-bottom: 5px; }
+        .stat-detail { font-size: 0.85em; opacity: 0.9; }
 
         .hours-table {
             width: 100%;
@@ -1203,8 +1018,7 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        .hours-table th,
-        .hours-table td {
+        .hours-table th, .hours-table td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid var(--border-color);
@@ -1220,15 +1034,9 @@
             letter-spacing: 0.5px;
         }
 
-        .hours-table tr:hover {
-            background: rgba(0,0,0,0.02);
-        }
-
-        [data-theme="dark"] .hours-table tr:hover {
-            background: rgba(255,255,255,0.05);
-        }
+        .hours-table tr:hover { background: rgba(0,0,0,0.02); }
+        [data-theme="dark"] .hours-table tr:hover { background: rgba(255,255,255,0.05); }
         
-        /* FOOTER */
         .footer-brand {
             text-align: center;
             padding: 30px 20px;
@@ -1238,7 +1046,6 @@
             font-size: 0.9em;
         }
         
-        /* TOAST */
         .toast {
             position: fixed;
             bottom: 90px;
@@ -1263,11 +1070,8 @@
             transform: translateX(-50%) translateY(0);
         }
         
-        @media (min-width: 769px) {
-            .toast { bottom: 40px; }
-        }
+        @media (min-width: 769px) { .toast { bottom: 40px; } }
 
-        /* HELP SHORTCUTS */
         .shortcuts-help {
             position: fixed;
             bottom: 80px;
@@ -1284,32 +1088,23 @@
             max-width: 250px;
         }
 
-        .shortcuts-help.show {
-            display: block;
-        }
-
-        .shortcuts-help h4 {
-            margin-bottom: 10px;
-            color: var(--text-primary);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 5px;
-        }
-
-        .shortcut-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 5px;
-        }
-
-        .key {
-            background: var(--border-color);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 0.9em;
-        }
+        .shortcuts-help.show { display: block; }
+        .shortcuts-help h4 { margin-bottom: 10px; color: var(--text-primary); border-bottom: 1px solid var(--border-color); padding-bottom: 5px; }
+        .shortcut-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .key { background: var(--border-color); padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 0.9em; }
         
-        /* PRINT */
+        .info-box {
+            background: rgba(52, 152, 219, 0.1);
+            border-left: 4px solid var(--info);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        .info-box strong { color: var(--text-primary); }
+        
         @media print {
             body { background: white; padding: 0; }
             .container { box-shadow: none; margin: 0; }
@@ -1335,7 +1130,6 @@
 </head>
 <body>
     <div class="container" id="captureArea">
-        <!-- HEADER -->
         <header class="main-header">
             <div class="header-actions no-print">
                 <button class="btn-icon-header" onclick="toggleShortcuts()" title="Atajos de teclado">⌨️</button>
@@ -1351,17 +1145,16 @@
                 </div>
                 <div class="header-text">
                     <h1 class="header-title">Sistema de Horarios Pro</h1>
-                    <span style="opacity: 0.8; font-size: 0.9em;">Gestión Inteligente de Equipo</span>
+                    <span style="opacity: 0.8; font-size: 0.9em;">Gestión por Roles Dinámica</span>
                 </div>
             </div>
         </header>
 
-        <!-- NAVEGACIÓN -->
-        <div class="nav-desktop no-print">
+        <div class="nav-desktop no-print" id="desktopNav">
             <button class="tab active" onclick="showTab('schedule', this)">
                 <span>📅</span> Horario
             </button>
-            <button class="tab" onclick="showTab('stats', this)">
+            <button class="tab" id="statsTabBtn" onclick="showTab('stats', this)">
                 <span>📊</span> Estadísticas
             </button>
             <button class="tab" onclick="showTab('config', this)">
@@ -1369,7 +1162,6 @@
             </button>
         </div>
 
-        <!-- SECCIÓN HORARIO -->
         <div id="schedule" class="content-section active">
             <div class="calendar-controls no-print">
                 <div class="input-group">
@@ -1393,21 +1185,11 @@
                     <label>Año</label>
                     <select id="yearSelect" onchange="generateSchedule()"></select>
                 </div>
-                <button class="btn btn-secondary" onclick="goToToday()">
-                    📍 Hoy
-                </button>
-                <button class="btn btn-primary" onclick="generateSchedule()">
-                    🔄 Actualizar
-                </button>
-                <button class="btn btn-warning" onclick="captureSchedule()">
-                    📸 Imagen
-                </button>
-                <button class="btn btn-success" onclick="exportToExcel()">
-                    📊 Excel
-                </button>
-                <button class="btn btn-info" onclick="window.print()">
-                    🖨️ PDF
-                </button>
+                <button class="btn btn-secondary" onclick="goToToday()">📍 Hoy</button>
+                <button class="btn btn-primary" onclick="generateSchedule()">🔄 Actualizar</button>
+                <button class="btn btn-warning" onclick="captureSchedule()">📸 Imagen</button>
+                <button class="btn btn-success" onclick="exportToExcel()">📊 Excel</button>
+                <button class="btn btn-info" onclick="window.print()">🖨️ PDF</button>
             </div>
 
             <div class="view-toggle no-print">
@@ -1426,7 +1208,7 @@
                 <div class="day-header">Martes</div>
                 <div class="day-header">Miércoles</div>
                 <div class="day-header">Jueves</div>
-                <div class="day-header">Viernes</div>
+                <day-header">Viernes</day-header>
                 <div class="day-header">Sábado</div>
                 <div class="day-header">Domingo</div>
             </div>
@@ -1437,12 +1219,11 @@
             </div>
         </div>
 
-        <!-- SECCIÓN ESTADÍSTICAS -->
         <div id="stats" class="content-section">
             <div class="calendar-header">
                 <div class="month-title">Resumen de Horas</div>
                 <div style="color: var(--text-secondary); margin-top: 10px;">
-                    Análisis automático del mes seleccionado
+                    Horas trabajadas por empleado (Lunes a Sábado)
                 </div>
             </div>
 
@@ -1453,8 +1234,9 @@
                     <tr>
                         <th>Empleado</th>
                         <th>Rol</th>
-                        <th>Turno</th>
-                        <th>Días</th>
+                        <th>Sáb Libres</th>
+                        <th>Lun Libres</th>
+                        <th>Días Total</th>
                         <th>Horas L-V</th>
                         <th>Horas Sáb</th>
                         <th>Total</th>
@@ -1464,7 +1246,6 @@
             </table>
         </div>
 
-        <!-- SECCIÓN CONFIGURACIÓN -->
         <div id="config" class="content-section">
             <div class="action-bar no-print">
                 <button class="btn btn-success" onclick="exportConfig()">💾 Guardar Config</button>
@@ -1492,38 +1273,24 @@
                 </div>
 
                 <div class="card">
-                    <h3>🔄 Asignar Turnos</h3>
-                    <div style="margin-bottom: 20px;">
-                        <div style="font-weight: bold; color: var(--shift1-color); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                            <span style="width: 12px; height: 12px; background: var(--shift1-color); border-radius: 50%; display: inline-block;"></span>
-                            Turno 1
-                        </div>
-                        <div class="checkbox-list" id="shift1List"></div>
-                    </div>
-                    <div>
-                        <div style="font-weight: bold; color: var(--shift2-color); margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                            <span style="width: 12px; height: 12px; background: var(--shift2-color); border-radius: 50%; display: inline-block;"></span>
-                            Turno 2
-                        </div>
-                        <div class="checkbox-list" id="shift2List"></div>
+                    <h3>🔄 Cobertura Mínima</h3>
+                    <div class="info-box">
+                        <strong>🧮 Sistema de Rotación Automática:</strong><br>
+                        • Cada Sábado: Mínimo 1 persona por rol (rotación)<br>
+                        • Cada Lunes: Mínimo 1 persona por rol (rotación cruzada)<br>
+                        • Anti-3-días: Si libras Sábado, trabajas el Lunes siguiente<br>
+                        • Roles únicos (como Eva): Alternan Sábado/Lunes semana a semana
                     </div>
                 </div>
 
                 <div class="card">
-                    <h3>🎨 Personalización</h3>
-                    <div class="input-group">
-                        <label>Color Turno 1</label>
-                        <div class="color-picker-wrapper">
-                            <input type="color" id="colorShift1" value="#27ae60" onchange="updateColors()">
-                            <span id="colorShift1Hex">#27ae60</span>
+                    <h3>👁️ Visibilidad</h3>
+                    <div class="toggle-container" onclick="toggleStatsVisibility()">
+                        <div>
+                            <div class="toggle-label">Mostrar Estadísticas</div>
+                            <div class="toggle-desc">Activa la pestaña de resumen de horas</div>
                         </div>
-                    </div>
-                    <div class="input-group">
-                        <label>Color Turno 2</label>
-                        <div class="color-picker-wrapper">
-                            <input type="color" id="colorShift2" value="#2980b9" onchange="updateColors()">
-                            <span id="colorShift2Hex">#2980b9</span>
-                        </div>
+                        <div class="toggle-switch active" id="statsToggle"></div>
                     </div>
                 </div>
 
@@ -1556,34 +1323,6 @@
                                     <input type="time" id="satEnd" value="14:30" onchange="updateConfig()">
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>🔄 Rotación</h3>
-                    <div class="input-group">
-                        <label>Frecuencia</label>
-                        <select id="rotWeeks" onchange="updateConfig()">
-                            <option value="1">Cada semana</option>
-                            <option value="2" selected>Cada 2 semanas</option>
-                            <option value="4">Cada mes</option>
-                        </select>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <div class="input-group">
-                            <label>Libra T1 (Fase 1)</label>
-                            <select id="rest1" onchange="updateConfig()">
-                                <option value="1" selected>Lunes</option>
-                                <option value="6">Sábado</option>
-                            </select>
-                        </div>
-                        <div class="input-group">
-                            <label>Libra T2 (Fase 1)</label>
-                            <select id="rest2" onchange="updateConfig()">
-                                <option value="1">Lunes</option>
-                                <option value="6" selected>Sábado</option>
-                            </select>
                         </div>
                     </div>
                 </div>
@@ -1628,7 +1367,6 @@
         </div>
     </div>
 
-    <!-- MODAL PARA NOTAS -->
     <div class="modal-overlay no-print" id="noteModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1645,7 +1383,6 @@
         </div>
     </div>
 
-    <!-- AYUDA DE ATAJOS -->
     <div class="shortcuts-help no-print" id="shortcutsHelp">
         <h4>⌨️ Atajos de Teclado</h4>
         <div class="shortcut-row"><span>Mes siguiente</span> <span class="key">Ctrl</span> + <span class="key">→</span></div>
@@ -1656,13 +1393,12 @@
         <div style="margin-top: 10px; font-size: 0.8em; opacity: 0.7;">Click fuera para cerrar</div>
     </div>
 
-    <!-- NAVEGACIÓN MÓVIL -->
-    <div class="nav-mobile no-print">
+    <div class="nav-mobile no-print" id="mobileNav">
         <button class="nav-item active" onclick="showTab('schedule', this)">
             <span class="nav-icon">📅</span>
             <span>Horario</span>
         </button>
-        <button class="nav-item" onclick="showTab('stats', this)">
+        <button class="nav-item" id="statsNavItem" onclick="showTab('stats', this)">
             <span class="nav-icon">📊</span>
             <span>Horas</span>
         </button>
@@ -1675,36 +1411,39 @@
     <div id="toast" class="toast"></div>
 
     <script>
-        // CONFIGURACIÓN COMPLETA
+        // CONFIGURACIÓN COMPLETA - SIN TURNOS FIJOS
         let config = {
             employees: [
-                {id: 1, name: 'Ernesto', role: 'Colorista', shift: 1},
-                {id: 2, name: 'Judith', role: 'Estilista', shift: 1},
-                {id: 3, name: 'Rhizza', role: 'Champúñier', shift: 1},
-                {id: 4, name: 'Randy', role: 'Champúñier', shift: 1},
-                {id: 5, name: 'Yis', role: 'Manicurista', shift: 1},
-                {id: 6, name: 'Eva', role: 'Recepcionista', shift: 1},
-                {id: 7, name: 'Davide', role: 'Estilista', shift: 2},
-                {id: 8, name: 'Genesis', role: 'Champúñier', shift: 2},
-                {id: 9, name: 'Esther', role: 'Colorista', shift: 2},
-                {id: 10, name: 'Gigi', role: 'Manicurista', shift: 2},
-                {id: 11, name: 'Luzma', role: 'Colorista', shift: 2}
+                {id: 1, name: 'Ernesto', role: 'Colorista'},
+                {id: 2, name: 'Judith', role: 'Estilista'},
+                {id: 3, name: 'Rhizza', role: 'Champúñier'},
+                {id: 4, name: 'Randy', role: 'Champúñier'},
+                {id: 5, name: 'Yis', role: 'Manicurista'},
+                {id: 6, name: 'Eva', role: 'Recepcionista'},
+                {id: 7, name: 'Davide', role: 'Estilista'},
+                {id: 8, name: 'Genesis', role: 'Champúñier'},
+                {id: 9, name: 'Esther', role: 'Colorista'},
+                {id: 10, name: 'Gigi', role: 'Manicurista'},
+                {id: 11, name: 'Luzma', role: 'Colorista'}
             ],
             schedules: { lvStart: '10:00', lvEnd: '19:00', satStart: '09:30', satEnd: '14:30' },
-            rotation: { weeks: 2, rest1: 1, rest2: 6 },
             holidays: [],
-            vacations: [], // {empId, start, end}
-            notes: {}, // { "YYYY-MM-DD": "texto" }
-            colors: { shift1: '#27ae60', shift2: '#2980b9' },
-            viewMode: 'month'
+            vacations: [],
+            notes: {},
+            showStats: true
         };
 
         const roles = {
-            'Colorista': '#e74c3c', 'Estilista': '#1abc9c', 'Champúñier': '#3498db',
-            'Manicurista': '#f39c12', 'Recepcionista': '#9b59b6', 'Otro': '#95a5a6'
+            'Colorista': '#e74c3c', 
+            'Estilista': '#1abc9c', 
+            'Champúñier': '#3498db',
+            'Manicurista': '#f39c12', 
+            'Recepcionista': '#9b59b6', 
+            'Otro': '#95a5a6'
         };
 
-        let currentDate = new Date();
+        const dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+        const dayNamesShort = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 
         // INICIALIZAR
         window.onload = function() {
@@ -1714,21 +1453,16 @@
                 config = { ...config, ...parsed };
                 if(!config.holidays) config.holidays = [];
                 if(!config.vacations) config.vacations = [];
-                if(!config.notes) config.notes = {};
-                if(!config.colors) config.colors = { shift1: '#27ae60', shift2: '#2980b9' };
+                if(!config.notes) config.notes = [];
+                if(config.showStats === undefined) config.showStats = true;
+                config.employees.forEach(e => delete e.shift);
             }
             
-            // Aplicar colores guardados
-            document.documentElement.style.setProperty('--shift1-color', config.colors.shift1);
-            document.documentElement.style.setProperty('--shift2-color', config.colors.shift2);
-            document.getElementById('colorShift1').value = config.colors.shift1;
-            document.getElementById('colorShift2').value = config.colors.shift2;
-            
-            // Tema
             const savedTheme = localStorage.getItem('muroTheme') || 'light';
             document.documentElement.setAttribute('data-theme', savedTheme);
             
-            // Años
+            updateStatsVisibilityUI();
+            
             const ys = document.getElementById('yearSelect');
             const cy = new Date().getFullYear();
             for(let i = cy-1; i <= cy+3; i++) {
@@ -1743,18 +1477,13 @@
             document.getElementById('yearSelect').value = today.getFullYear();
             document.getElementById('holidayMonth').value = today.getMonth();
             
-            // Fechas vacaciones default
             document.getElementById('vacStart').valueAsDate = today;
             document.getElementById('vacEnd').valueAsDate = today;
             
-            // Inputs
             document.getElementById('lvStart').value = config.schedules.lvStart;
             document.getElementById('lvEnd').value = config.schedules.lvEnd;
             document.getElementById('satStart').value = config.schedules.satStart;
             document.getElementById('satEnd').value = config.schedules.satEnd;
-            document.getElementById('rotWeeks').value = config.rotation.weeks;
-            document.getElementById('rest1').value = config.rotation.rest1;
-            document.getElementById('rest2').value = config.rotation.rest2;
             
             document.getElementById('currentDateDisplay').textContent = 
                 today.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -1767,33 +1496,117 @@
             calculateHours();
         };
 
-        // ATAJOS DE TECLADO
+        // SISTEMA DE ROTACIÓN CORREGIDO
+        function getEmployeesByRole(role) {
+            return config.employees.filter(e => e.role === role);
+        }
+
+        function getWeekNumber(d) {
+            const dt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+            const dayNum = dt.getUTCDay() || 7;
+            dt.setUTCDate(dt.getUTCDate() + 4 - dayNum);
+            const yearStart = new Date(Date.UTC(dt.getUTCFullYear(),0,1));
+            return Math.ceil((((dt - yearStart) / 86400000) + 1)/7);
+        }
+
+        // NUEVA LÓGICA DE DESCANSOS POR ROL - CORREGIDA PARA N=1
+        function getRestingEmployees(date) {
+            const wd = date.getDay(); // 0=Dom, 1=Lun, 6=Sáb
+            const weekNum = getWeekNumber(date);
+            const resting = [];
+            
+            // Solo Sábados (6) y Lunes (1) tienen descansos rotativos
+            if(wd !== 1 && wd !== 6) return resting;
+            
+            Object.keys(roles).forEach(role => {
+                const staff = getEmployeesByRole(role).filter(e => !isOnVacation(e.id, date));
+                if(staff.length === 0) return;
+                
+                const n = staff.length;
+                
+                if(n === 1) {
+                    // CASO ESPECIAL: Solo 1 persona en el rol (como Eva)
+                    // Alterna: Semana par libra Sábado, Semana impar libra Lunes
+                    if(weekNum % 2 === 0) {
+                        // Semana par: Descansa Sábado
+                        if(wd === 6) resting.push(staff[0].id);
+                    } else {
+                        // Semana impar: Descansa Lunes
+                        if(wd === 1) resting.push(staff[0].id);
+                    }
+                } else if(wd === 6) {
+                    // SÁBADO: Descansa 1 persona por rol (rotación simple)
+                    // Semana 1: índice 0, Semana 2: índice 1, etc.
+                    const restIndex = (weekNum - 1) % n;
+                    resting.push(staff[restIndex].id);
+                    
+                } else if(wd === 1) {
+                    // LUNES: Descansa una persona DIFERENTE a la del sábado
+                    // Usamos offset para desplazar la rotación y evitar 3 días
+                    const saturdayIndex = (weekNum - 1) % n; // Quién descansó el sábado de esta semana
+                    const mondayIndex = (saturdayIndex + 1) % n; // El siguiente descansa el lunes
+                    
+                    resting.push(staff[mondayIndex].id);
+                    
+                    // Si hay 3 o más, el tercero también puede descansar el lunes (menos carga)
+                    if(n >= 3) {
+                        const thirdIndex = (saturdayIndex + 2) % n;
+                        resting.push(staff[thirdIndex].id);
+                    }
+                }
+            });
+            
+            return resting;
+        }
+
+        function isHoliday(date) {
+            const dateStr = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+            return config.holidays.includes(dateStr);
+        }
+
+        function isOnVacation(empId, date) {
+            const dateStr = date.toISOString().split('T')[0];
+            return config.vacations.some(v => {
+                if(v.empId !== empId) return false;
+                return dateStr >= v.start && dateStr <= v.end;
+            });
+        }
+
+        function toggleStatsVisibility() {
+            config.showStats = !config.showStats;
+            updateStatsVisibilityUI();
+            save();
+            showToast(config.showStats ? '📊 Estadísticas activadas' : '📊 Estadísticas ocultas');
+        }
+
+        function updateStatsVisibilityUI() {
+            const toggle = document.getElementById('statsToggle');
+            const desktopBtn = document.getElementById('statsTabBtn');
+            const mobileItem = document.getElementById('statsNavItem');
+            
+            if(config.showStats) {
+                toggle.classList.add('active');
+                desktopBtn.style.display = 'flex';
+                mobileItem.style.display = 'flex';
+            } else {
+                toggle.classList.remove('active');
+                desktopBtn.style.display = 'none';
+                mobileItem.style.display = 'none';
+                
+                if(document.getElementById('stats').classList.contains('active')) {
+                    showTab('schedule', document.querySelector('.tab'));
+                }
+            }
+        }
+
         document.addEventListener('keydown', (e) => {
             if(e.ctrlKey || e.metaKey) {
                 switch(e.key) {
-                    case 'ArrowRight':
-                        e.preventDefault();
-                        changeMonth(1);
-                        break;
-                    case 'ArrowLeft':
-                        e.preventDefault();
-                        changeMonth(-1);
-                        break;
-                    case 'h':
-                    case 'H':
-                        e.preventDefault();
-                        goToToday();
-                        break;
-                    case 'p':
-                    case 'P':
-                        e.preventDefault();
-                        window.print();
-                        break;
-                    case 't':
-                    case 'T':
-                        e.preventDefault();
-                        toggleTheme();
-                        break;
+                    case 'ArrowRight': e.preventDefault(); changeMonth(1); break;
+                    case 'ArrowLeft': e.preventDefault(); changeMonth(-1); break;
+                    case 'h': case 'H': e.preventDefault(); goToToday(); break;
+                    case 'p': case 'P': e.preventDefault(); window.print(); break;
+                    case 't': case 'T': e.preventDefault(); toggleTheme(); break;
                 }
             }
         });
@@ -1816,13 +1629,10 @@
         function changeMonth(delta) {
             const m = parseInt(document.getElementById('monthSelect').value);
             const y = parseInt(document.getElementById('yearSelect').value);
-            
             let newM = m + delta;
             let newY = y;
-            
             if(newM > 11) { newM = 0; newY++; }
             if(newM < 0) { newM = 11; newY--; }
-            
             document.getElementById('monthSelect').value = newM;
             document.getElementById('yearSelect').value = newY;
             generateSchedule();
@@ -1844,17 +1654,15 @@
         }
 
         function showTab(tab, btn) {
+            if(tab === 'stats' && !config.showStats) return;
             document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
             document.getElementById(tab).classList.add('active');
-            
             document.querySelectorAll('.tab, .nav-item').forEach(t => t.classList.remove('active'));
             if(btn) btn.classList.add('active');
-            
             const tabs = ['schedule', 'stats', 'config'];
             const idx = tabs.indexOf(tab);
             document.querySelectorAll('.tab')[idx]?.classList.add('active');
             document.querySelectorAll('.nav-item')[idx]?.classList.add('active');
-            
             if(tab === 'schedule') generateSchedule();
             if(tab === 'stats') calculateHours();
         }
@@ -1867,44 +1675,22 @@
             showToast('📍 Hoy');
         }
 
-        function isHoliday(date) {
-            const dateStr = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-            return config.holidays.includes(dateStr);
-        }
-
-        function isOnVacation(empId, date) {
-            const dateStr = date.toISOString().split('T')[0];
-            return config.vacations.some(v => {
-                if(v.empId !== empId) return false;
-                return dateStr >= v.start && dateStr <= v.end;
-            });
-        }
-
         function addHoliday() {
             const day = parseInt(document.getElementById('holidayDay').value);
             const month = parseInt(document.getElementById('holidayMonth').value);
             const year = parseInt(document.getElementById('yearSelect').value);
-            
-            if(!day || day < 1 || day > 31) {
-                showToast('⚠️ Día inválido');
-                return;
-            }
-            
+            if(!day || day < 1 || day > 31) { showToast('⚠️ Día inválido'); return; }
             const dateStr = `${year}-${month}-${day}`;
             if(!config.holidays.includes(dateStr)) {
                 config.holidays.push(dateStr);
-                save();
-                renderHolidays();
-                generateSchedule();
+                save(); renderHolidays(); generateSchedule();
                 showToast('🎉 Festivo añadido');
             }
         }
 
         function removeHoliday(dateStr) {
             config.holidays = config.holidays.filter(h => h !== dateStr);
-            save();
-            renderHolidays();
-            generateSchedule();
+            save(); renderHolidays(); generateSchedule();
         }
 
         function renderHolidays() {
@@ -1916,49 +1702,29 @@
             container.innerHTML = config.holidays.map(h => {
                 const [y, m, d] = h.split('-');
                 const date = new Date(y, m, d);
-                return `
-                    <div class="holiday-tag">
-                        ${d} ${date.toLocaleDateString('es-ES', {month: 'short'})}
-                        <button onclick="removeHoliday('${h}')">×</button>
-                    </div>
-                `;
+                return `<div class="holiday-tag">${d} ${date.toLocaleDateString('es-ES', {month: 'short'})}<button onclick="removeHoliday('${h}')">×</button></div>`;
             }).join('');
         }
 
         function updateVacEmployeeSelect() {
             const sel = document.getElementById('vacEmp');
-            sel.innerHTML = config.employees.map(e => 
-                `<option value="${e.id}">${e.name} (${e.role})</option>`
-            ).join('');
+            sel.innerHTML = config.employees.map(e => `<option value="${e.id}">${e.name} (${e.role})</option>`).join('');
         }
 
         function addVacation() {
             const empId = parseInt(document.getElementById('vacEmp').value);
             const start = document.getElementById('vacStart').value;
             const end = document.getElementById('vacEnd').value;
-            
-            if(!start || !end) {
-                showToast('⚠️ Selecciona fechas');
-                return;
-            }
-            
-            if(start > end) {
-                showToast('⚠️ Fecha inicio debe ser anterior');
-                return;
-            }
-            
+            if(!start || !end) { showToast('⚠️ Selecciona fechas'); return; }
+            if(start > end) { showToast('⚠️ Fecha inicio debe ser anterior'); return; }
             config.vacations.push({empId, start, end});
-            save();
-            renderVacations();
-            generateSchedule();
+            save(); renderVacations(); generateSchedule();
             showToast('🏖️ Vacaciones añadidas');
         }
 
         function removeVacation(idx) {
             config.vacations.splice(idx, 1);
-            save();
-            renderVacations();
-            generateSchedule();
+            save(); renderVacations(); generateSchedule();
         }
 
         function renderVacations() {
@@ -1967,18 +1733,9 @@
                 container.innerHTML = '<span style="color: var(--text-secondary); font-size: 0.9em;">Sin vacaciones programadas</span>';
                 return;
             }
-            
             container.innerHTML = config.vacations.map((v, i) => {
                 const emp = config.employees.find(e => e.id === v.empId);
-                return `
-                    <div class="vacation-item">
-                        <div class="vacation-info">
-                            <strong>${emp ? emp.name : 'Desconocido'}</strong>
-                            <div class="vacation-dates">${formatDate(v.start)} → ${formatDate(v.end)}</div>
-                        </div>
-                        <button class="btn btn-sm btn-danger" onclick="removeVacation(${i})">🗑</button>
-                    </div>
-                `;
+                return `<div class="vacation-item"><div class="vacation-info"><strong>${emp ? emp.name : 'Desconocido'}</strong><div class="vacation-dates">${formatDate(v.start)} → ${formatDate(v.end)}</div></div><button class="btn btn-sm btn-danger" onclick="removeVacation(${i})">🗑</button></div>`;
             }).join('');
         }
 
@@ -1987,7 +1744,6 @@
             return d.toLocaleDateString('es-ES', {day: 'numeric', month: 'short'});
         }
 
-        // NOTAS
         function openNoteModal(dateStr, dayNum) {
             document.getElementById('noteDate').value = dateStr;
             document.getElementById('noteModalTitle').textContent = `Nota - ${dayNum}`;
@@ -1995,36 +1751,25 @@
             document.getElementById('noteModal').classList.add('active');
         }
 
-        function closeNoteModal() {
-            document.getElementById('noteModal').classList.remove('active');
-        }
+        function closeNoteModal() { document.getElementById('noteModal').classList.remove('active'); }
 
         function saveNote() {
             const date = document.getElementById('noteDate').value;
             const text = document.getElementById('noteText').value.trim();
-            
-            if(text) {
-                config.notes[date] = text;
-            } else {
-                delete config.notes[date];
-            }
-            save();
-            closeNoteModal();
-            generateSchedule();
+            if(text) config.notes[date] = text;
+            else delete config.notes[date];
+            save(); closeNoteModal(); generateSchedule();
             showToast(text ? '💾 Nota guardada' : '🗑️ Nota eliminada');
         }
 
         function deleteNote() {
             const date = document.getElementById('noteDate').value;
             delete config.notes[date];
-            save();
-            closeNoteModal();
-            generateSchedule();
+            save(); closeNoteModal(); generateSchedule();
             showToast('🗑️ Nota eliminada');
         }
 
         function renderAll() {
-            // Empleados
             const el = document.getElementById('employeeList');
             el.innerHTML = '';
             config.employees.forEach(emp => {
@@ -2035,43 +1780,12 @@
                         <div class="emp-name">${emp.name}</div>
                         <div class="emp-role">
                             <span class="role-badge" style="background: ${roles[emp.role]}">${emp.role}</span>
-                            Turno ${emp.shift}
                         </div>
                     </div>
                     <button class="btn btn-icon btn-danger" onclick="deleteEmp(${emp.id})">🗑</button>
                 `;
                 el.appendChild(d);
             });
-
-            // Turnos
-            const s1 = document.getElementById('shift1List');
-            const s2 = document.getElementById('shift2List');
-            s1.innerHTML = ''; s2.innerHTML = '';
-            
-            config.employees.forEach(emp => {
-                const div = document.createElement('div');
-                div.className = 'checkbox-item';
-                if(emp.shift === 1) div.classList.add('checked');
-                
-                div.innerHTML = `
-                    <input type="checkbox" ${emp.shift === 1 ? 'checked' : ''} 
-                           onchange="toggleShift(${emp.id}, this.checked)"
-                           id="c${emp.id}">
-                    <label for="c${emp.id}" style="flex: 1; font-weight: 500;">${emp.name}</label>
-                    <span class="role-badge" style="background: ${roles[emp.role]}; font-size: 0.65em;">${emp.role.substring(0,3)}</span>
-                `;
-                div.onclick = function(e) {
-                    if(e.target.tagName !== 'INPUT' && e.target.tagName !== 'LABEL') {
-                        const cb = this.querySelector('input');
-                        cb.checked = !cb.checked;
-                        toggleShift(emp.id, cb.checked);
-                    }
-                };
-                
-                if(emp.shift === 1) s1.appendChild(div);
-                else s2.appendChild(div);
-            });
-            
             updateVacEmployeeSelect();
         }
 
@@ -2079,16 +1793,9 @@
             const n = document.getElementById('newEmpName').value.trim();
             const r = document.getElementById('newEmpRole').value;
             if(!n) return showToast('⚠️ Introduce nombre');
-            
-            config.employees.push({
-                id: Date.now(),
-                name: n,
-                role: r,
-                shift: 1
-            });
+            config.employees.push({id: Date.now(), name: n, role: r});
             document.getElementById('newEmpName').value = '';
-            save();
-            renderAll();
+            save(); renderAll(); generateSchedule();
             showToast('✅ Agregado');
         }
 
@@ -2096,17 +1803,9 @@
             if(confirm('¿Eliminar?')) {
                 config.employees = config.employees.filter(e => e.id !== id);
                 config.vacations = config.vacations.filter(v => v.empId !== id);
-                save();
-                renderAll();
+                save(); renderAll(); generateSchedule();
                 showToast('🗑️ Eliminado');
             }
-        }
-
-        function toggleShift(id, toShift1) {
-            const emp = config.employees.find(e => e.id === id);
-            emp.shift = toShift1 ? 1 : 2;
-            save();
-            renderAll();
         }
 
         function updateConfig() {
@@ -2114,29 +1813,13 @@
             config.schedules.lvEnd = document.getElementById('lvEnd').value;
             config.schedules.satStart = document.getElementById('satStart').value;
             config.schedules.satEnd = document.getElementById('satEnd').value;
-            config.rotation.weeks = parseInt(document.getElementById('rotWeeks').value);
-            config.rotation.rest1 = parseInt(document.getElementById('rest1').value);
-            config.rotation.rest2 = parseInt(document.getElementById('rest2').value);
-            save();
+            save(); generateSchedule(); calculateHours();
             showToast('💾 Guardado');
-        }
-
-        function updateColors() {
-            const c1 = document.getElementById('colorShift1').value;
-            const c2 = document.getElementById('colorShift2').value;
-            config.colors = { shift1: c1, shift2: c2 };
-            document.documentElement.style.setProperty('--shift1-color', c1);
-            document.documentElement.style.setProperty('--shift2-color', c2);
-            document.getElementById('colorShift1Hex').textContent = c1;
-            document.getElementById('colorShift2Hex').textContent = c2;
-            save();
-            generateSchedule();
         }
 
         function calculateHours() {
             const m = parseInt(document.getElementById('monthSelect').value);
             const y = parseInt(document.getElementById('yearSelect').value);
-            
             const lvHours = calculateTimeDiff(config.schedules.lvStart, config.schedules.lvEnd);
             const satHours = calculateTimeDiff(config.schedules.satStart, config.schedules.satEnd);
             
@@ -2145,7 +1828,8 @@
                 stats[emp.id] = {
                     name: emp.name,
                     role: emp.role,
-                    shift: emp.shift,
+                    satDays: 0,
+                    monDays: 0,
                     daysWorked: 0,
                     lvHours: 0,
                     satHours: 0,
@@ -2158,27 +1842,19 @@
             for(let day = 1; day <= dim; day++) {
                 const date = new Date(y, m, day);
                 const wd = date.getDay();
-                
                 if(wd === 0 || isHoliday(date)) continue;
                 
-                const wn = getWeek(date);
-                const phase = Math.floor((wn - 1) / config.rotation.weeks) % 2;
-                
-                const r1 = (wd === config.rotation.rest1 && phase === 0) || (wd === config.rotation.rest2 && phase === 1);
-                const r2 = (wd === config.rotation.rest2 && phase === 0) || (wd === config.rotation.rest1 && phase === 1);
-                
+                const restingToday = getRestingEmployees(date);
                 const isSat = wd === 6;
                 const hours = isSat ? satHours : lvHours;
                 
                 config.employees.forEach(emp => {
                     if(isOnVacation(emp.id, date)) return;
                     
-                    if(emp.shift === 1 && !r1) {
-                        stats[emp.id].daysWorked++;
-                        if(isSat) stats[emp.id].satHours += hours;
-                        else stats[emp.id].lvHours += hours;
-                        stats[emp.id].total += hours;
-                    } else if(emp.shift === 2 && !r2) {
+                    if(restingToday.includes(emp.id)) {
+                        if(isSat) stats[emp.id].satDays++;
+                        if(wd === 1) stats[emp.id].monDays++;
+                    } else {
                         stats[emp.id].daysWorked++;
                         if(isSat) stats[emp.id].satHours += hours;
                         else stats[emp.id].lvHours += hours;
@@ -2187,14 +1863,13 @@
                 });
             }
             
-            // Stats cards
             const statsGrid = document.getElementById('statsGrid');
             const totalHours = Object.values(stats).reduce((a, b) => a + b.total, 0);
             const avgHours = totalHours / config.employees.length || 0;
             
             statsGrid.innerHTML = `
                 <div class="stat-card">
-                    <h4>Total Horas</h4>
+                    <h4>Total Horas Mes</h4>
                     <div class="stat-value">${totalHours}h</div>
                 </div>
                 <div class="stat-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
@@ -2207,13 +1882,13 @@
                 </div>
             `;
             
-            // Tabla
             const tbody = document.getElementById('hoursTableBody');
             tbody.innerHTML = Object.values(stats).map(s => `
                 <tr>
                     <td><strong>${s.name}</strong></td>
                     <td><span class="role-badge" style="background: ${roles[s.role]}">${s.role}</span></td>
-                    <td>Turno ${s.shift}</td>
+                    <td>${s.satDays}</td>
+                    <td>${s.monDays}</td>
                     <td>${s.daysWorked}</td>
                     <td>${s.lvHours}h</td>
                     <td>${s.satHours}h</td>
@@ -2247,14 +1922,11 @@
             
             const headers = Array.from(cal.querySelectorAll('.day-header'));
             cal.innerHTML = '';
-            if(config.viewMode === 'month') {
-                headers.forEach(h => cal.appendChild(h));
-            }
+            if(config.viewMode === 'month') headers.forEach(h => cal.appendChild(h));
             
             const months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
             document.getElementById('monthTitle').textContent = `${months[m]} ${y}${config.viewMode === 'week' ? ' - Semana' : config.viewMode === 'list' ? ' - Lista' : ''}`;
             
-            // Leyenda
             const leg = document.getElementById('legend');
             leg.innerHTML = '';
             Object.entries(roles).forEach(([r,c]) => {
@@ -2262,74 +1934,50 @@
                     leg.innerHTML += `<div class="legend-item"><div class="color-dot" style="background: ${c}"></div>${r}</div>`;
                 }
             });
-            leg.innerHTML += `<div class="legend-item"><div class="color-dot" style="background: var(--shift1-color)"></div>Turno 1</div>`;
-            leg.innerHTML += `<div class="legend-item"><div class="color-dot" style="background: var(--shift2-color)"></div>Turno 2</div>`;
-            [['#e74c3c','Libre'], ['#9c27b0','Festivo'], ['#ff9800','Vacaciones']].forEach(([c,t]) => {
-                leg.innerHTML += `<div class="legend-item"><div class="color-dot" style="background: ${c}"></div>${t}</div>`;
-            });
+            leg.innerHTML += `<div class="legend-item"><div class="color-dot" style="background: #e74c3c"></div>Libre</div>`;
+            leg.innerHTML += `<div class="legend-item"><div class="color-dot" style="background: #9c27b0"></div>Festivo</div>`;
 
             const dim = new Date(y, m + 1, 0).getDate();
-            const t1 = config.employees.filter(e => e.shift === 1);
-            const t2 = config.employees.filter(e => e.shift === 2);
             const today = new Date();
             const isCurrentMonth = today.getMonth() === m && today.getFullYear() === y;
             
             if(config.viewMode === 'list') {
-                // Vista lista
                 for(let day = 1; day <= dim; day++) {
                     const date = new Date(y, m, day);
                     const wd = date.getDay();
                     const dateStr = date.toISOString().split('T')[0];
-                    
                     if(wd === 0 || isHoliday(date)) continue;
                     
                     const item = document.createElement('div');
                     item.className = 'list-item';
-                    
-                    const wn = getWeek(date);
-                    const phase = Math.floor((wn - 1) / config.rotation.weeks) % 2;
-                    const r1 = (wd === config.rotation.rest1 && phase === 0) || (wd === config.rotation.rest2 && phase === 1);
-                    const r2 = (wd === config.rotation.rest2 && phase === 0) || (wd === config.rotation.rest1 && phase === 1);
+                    const resting = getRestingEmployees(date);
                     
                     let content = `<div class="list-date">${date.toLocaleDateString('es-ES', {weekday: 'long', day: 'numeric'})}</div>`;
-                    content += `<div style="display: flex; gap: 10px; flex-wrap: wrap;">`;
                     
-                    if(r1) {
-                        content += `<span class="shift-block shift-rest" style="flex: 1; min-width: 200px;">Turno 1: LIBRE</span>`;
-                    } else {
-                        const working = t1.filter(e => !isOnVacation(e.id, date));
-                        const vac = t1.filter(e => isOnVacation(e.id, date));
-                        content += `<span class="shift-block shift-1" style="flex: 1; min-width: 200px;">
-                            <strong>Turno 1:</strong> ${working.map(e => e.name).join(', ') || 'Nadie'}
-                            ${vac.length ? `<span class="vacation-badge">🏖️ ${vac.map(e => e.name.split(' ')[0]).join(', ')}</span>` : ''}
-                        </span>`;
-                    }
+                    Object.keys(roles).forEach(role => {
+                        const staff = getEmployeesByRole(role);
+                        if(staff.length === 0) return;
+                        
+                        const working = staff.filter(e => !resting.includes(e.id) && !isOnVacation(e.id, date));
+                        const restingStaff = staff.filter(e => resting.includes(e.id) && !isOnVacation(e.id, date));
+                        const vacStaff = staff.filter(e => isOnVacation(e.id, date));
+                        
+                        if(working.length > 0 || restingStaff.length > 0 || vacStaff.length > 0) {
+                            content += `<div style="margin-bottom: 8px;"><strong style="color: ${roles[role]}">${role}:</strong> `;
+                            const names = working.map(e => e.name).join(', ');
+                            const restNames = restingStaff.map(e => `<span style="text-decoration: line-through; opacity: 0.6; color: #e74c3c">${e.name}</span>`).join(', ');
+                            const vacNames = vacStaff.map(e => `<span style="color: #ff9800">🏖️ ${e.name}</span>`).join(', ');
+                            content += [names, restNames, vacNames].filter(Boolean).join(' | ');
+                            content += `</div>`;
+                        }
+                    });
                     
-                    if(r2) {
-                        content += `<span class="shift-block shift-rest" style="flex: 1; min-width: 200px;">Turno 2: LIBRE</span>`;
-                    } else {
-                        const working = t2.filter(e => !isOnVacation(e.id, date));
-                        const vac = t2.filter(e => isOnVacation(e.id, date));
-                        content += `<span class="shift-block shift-2" style="flex: 1; min-width: 200px;">
-                            <strong>Turno 2:</strong> ${working.map(e => e.name).join(', ') || 'Nadie'}
-                            ${vac.length ? `<span class="vacation-badge">🏖️ ${vac.map(e => e.name.split(' ')[0]).join(', ')}</span>` : ''}
-                        </span>`;
-                    }
-                    
-                    content += `</div>`;
-                    
-                    if(config.notes[dateStr]) {
-                        content += `<div class="day-note">📝 ${config.notes[dateStr]}</div>`;
-                    }
-                    
+                    if(config.notes[dateStr]) content += `<div class="day-note">📝 ${config.notes[dateStr]}</div>`;
                     item.innerHTML = content;
                     cal.appendChild(item);
                 }
             } else {
-                // Vistas mensual y semanal
-                let startDay = 1;
-                let endDay = dim;
-                
+                let startDay = 1, endDay = dim;
                 if(config.viewMode === 'week') {
                     if(isCurrentMonth) {
                         const currentWeekDay = today.getDay();
@@ -2337,168 +1985,111 @@
                         if(startDay < 1) startDay = 1;
                         endDay = startDay + 6;
                         if(endDay > dim) endDay = dim;
-                    } else {
-                        endDay = 7;
-                    }
+                    } else { endDay = 7; }
                 } else {
-                    // Rellenar espacios vacíos mes
                     const fd = new Date(y, m, 1);
                     let sd = fd.getDay() - 1;
                     if(sd === -1) sd = 6;
                     for(let i = 0; i < sd; i++) {
                         const d = document.createElement('div');
-                        d.className = 'day-cell';
-                        d.style.background = 'rgba(0,0,0,0.02)';
-                        d.style.border = 'none';
+                        d.className = 'day-cell'; d.style.background = 'rgba(0,0,0,0.02)'; d.style.border = 'none';
                         cal.appendChild(d);
                     }
                 }
                 
                 for(let day = startDay; day <= endDay; day++) {
                     if(day > dim) break;
-                    
                     const date = new Date(y, m, day);
                     const wd = date.getDay();
                     const dateStr = date.toISOString().split('T')[0];
-                    const cell = createDayCell(date, day, wd, isCurrentMonth, today, t1, t2, config.viewMode === 'week');
+                    const cell = createDayCell(date, day, wd, isCurrentMonth, today, config.viewMode === 'week');
                     
-                    // Botón nota
                     const btnNote = document.createElement('button');
                     btnNote.className = 'btn-note no-print' + (config.notes[dateStr] ? ' has-note' : '');
                     btnNote.innerHTML = config.notes[dateStr] ? '📝' : '+';
-                    btnNote.title = config.notes[dateStr] || 'Añadir nota';
-                    btnNote.onclick = (e) => {
-                        e.stopPropagation();
-                        openNoteModal(dateStr, day + ' de ' + months[m]);
-                    };
+                    btnNote.onclick = (e) => { e.stopPropagation(); openNoteModal(dateStr, dayNames[wd] + ' ' + day + ' de ' + months[m]); };
                     cell.appendChild(btnNote);
                     
-                    // Mostrar nota si existe
                     if(config.notes[dateStr] && config.viewMode !== 'week') {
                         const noteDiv = document.createElement('div');
                         noteDiv.className = 'day-note';
                         noteDiv.textContent = config.notes[dateStr];
-                        cell.querySelector('.shifts-container')?.appendChild(noteDiv) || cell.appendChild(noteDiv);
+                        cell.appendChild(noteDiv);
                     }
-                    
                     cal.appendChild(cell);
                 }
             }
         }
 
-        function createDayCell(date, day, wd, isCurrentMonth, today, t1, t2, isWeekView) {
-            const wn = getWeek(date);
-            const phase = Math.floor((wn - 1) / config.rotation.weeks) % 2;
+        function createDayCell(date, day, wd, isCurrentMonth, today, isWeekView) {
+            const weekNum = getWeekNumber(date);
             const holiday = isHoliday(date);
             const dateStr = date.toISOString().split('T')[0];
+            const resting = getRestingEmployees(date);
+            const dayName = dayNames[wd];
+            const dayNameShort = dayNamesShort[wd];
             
             const cell = document.createElement('div');
             cell.className = 'day-cell';
             if(isWeekView) cell.classList.add('week-view-day');
             
-            if(isCurrentMonth && today.getDate() === day && today.getMonth() === date.getMonth()) {
-                cell.classList.add('today');
-            }
-            
-            // Verificar vacaciones
-            const t1Vac = t1.filter(e => isOnVacation(e.id, date));
-            const t2Vac = t2.filter(e => isOnVacation(e.id, date));
-            const t1Working = t1.filter(e => !isOnVacation(e.id, date));
-            const t2Working = t2.filter(e => !isOnVacation(e.id, date));
+            if(isCurrentMonth && today.getDate() === day && today.getMonth() === date.getMonth()) cell.classList.add('today');
             
             if(wd === 0 || holiday) {
                 cell.className += holiday ? ' cell-holiday' : ' cell-closed';
-                
                 if(isWeekView) {
-                    cell.innerHTML = `
-                        <div class="week-day-label">
-                            <span class="day-name">${date.toLocaleDateString('es-ES', {weekday: 'short'})}</span>
-                            <span class="day-num">${day}</span>
-                        </div>
-                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                            <span style="font-size: 2em;">${holiday ? '🎉' : '🔒'}</span>
-                            <span style="font-weight: bold;">${holiday ? 'FESTIVO' : 'CERRADO'}</span>
-                        </div>
-                    `;
+                    cell.innerHTML = `<div class="week-day-label"><span class="day-name">${dayNameShort}</span><span class="day-num">${day}</span></div><div style="display: flex; flex-direction: column; align-items: center; justify-content: center;"><span style="font-size: 2em;">${holiday ? '🎉' : '🔒'}</span><span style="font-weight: bold;">${holiday ? 'FESTIVO' : 'CERRADO'}</span></div>`;
                 } else {
-                    cell.innerHTML = `
-                        <div class="day-number">${day}${isCurrentMonth && today.getDate() === day ? '<span class="today-badge">HOY</span>' : '<span class="week-badge">S'+wn+'</span>'}</div>
-                        <div style="grid-column: 2; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                            <span style="font-size: 2em;">${holiday ? '🎉' : '🔒'}</span>
-                            <span style="font-weight: bold; margin-top: 5px;">${holiday ? 'FESTIVO' : 'CERRADO'}</span>
-                        </div>
-                    `;
+                    cell.innerHTML = `<div class="day-number"><span>${dayNameShort} ${day}</span>${isCurrentMonth && today.getDate() === day ? '<span class="today-badge">HOY</span>' : '<span class="week-badge">S'+weekNum+'</span>'}</div><div style="grid-column: 2; display: flex; flex-direction: column; align-items: center; justify-content: center;"><span style="font-size: 2em;">${holiday ? '🎉' : '🔒'}</span><span style="font-weight: bold; margin-top: 5px;">${holiday ? 'FESTIVO' : 'CERRADO'}</span></div>`;
                 }
             } else {
-                const r1 = (wd === config.rotation.rest1 && phase === 0) || (wd === config.rotation.rest2 && phase === 1);
-                const r2 = (wd === config.rotation.rest2 && phase === 0) || (wd === config.rotation.rest1 && phase === 1);
-                
                 if(wd === 6) cell.classList.add('cell-saturday');
                 
+                let html = '';
                 if(isWeekView) {
-                    let html = `<div class="week-day-label">
-                        <span class="day-name">${date.toLocaleDateString('es-ES', {weekday: 'long'})}</span>
-                        <span class="day-num">${day}</span>
-                    </div>`;
-                    html += `<div class="shifts-container">`;
-                    
-                    if(r1) {
-                        html += `<div class="shift-block shift-rest"><span class="shift-title">Turno 1 Libre</span></div>`;
-                    } else {
-                        html += createShiftBlock(t1Working, 'shift-1', wd === 6, t1Vac);
-                    }
-                    
-                    if(r2) {
-                        html += `<div class="shift-block shift-rest"><span class="shift-title">Turno 2 Libre</span></div>`;
-                    } else {
-                        html += createShiftBlock(t2Working, 'shift-2', wd === 6, t2Vac);
-                    }
-                    html += `</div>`;
-                    cell.innerHTML = html;
+                    html += `<div class="week-day-label"><span class="day-name">${dayName}</span><span class="day-num">${day}</span></div>`;
                 } else {
-                    let html = `<div class="day-number">${day}${isCurrentMonth && today.getDate() === day ? '<span class="today-badge">HOY</span>' : '<span class="week-badge">S'+wn+'</span>'}</div>`;
-                    html += `<div class="shifts-container">`;
-                    
-                    if(r1) {
-                        html += `<div class="shift-block shift-rest"><span class="shift-title">Turno 1 Libre</span>${t1Vac.length ? `<div style="font-size: 0.8em; margin-top: 5px;">🏖️ ${t1Vac.map(e => e.name.split(' ')[0]).join(', ')}</div>` : ''}</div>`;
-                    } else {
-                        html += createShiftBlock(t1Working, 'shift-1', wd === 6, t1Vac);
-                    }
-                    
-                    if(r2) {
-                        html += `<div class="shift-block shift-rest"><span class="shift-title">Turno 2 Libre</span>${t2Vac.length ? `<div style="font-size: 0.8em; margin-top: 5px;">🏖️ ${t2Vac.map(e => e.name.split(' ')[0]).join(', ')}</div>` : ''}</div>`;
-                    } else {
-                        html += createShiftBlock(t2Working, 'shift-2', wd === 6, t2Vac);
-                    }
-                    html += `</div>`;
-                    cell.innerHTML = html;
+                    html += `<div class="day-number"><span class="day-name-mobile">${dayName}</span><span>${day}</span>${isCurrentMonth && today.getDate() === day ? '<span class="today-badge">HOY</span>' : '<span class="week-badge">S'+weekNum+'</span>'}</div>`;
                 }
+                
+                html += `<div style="display: flex; flex-direction: column; gap: 8px;">`;
+                
+                Object.keys(roles).forEach(role => {
+                    const staff = getEmployeesByRole(role);
+                    if(staff.length === 0) return;
+                    
+                    const working = staff.filter(e => !resting.includes(e.id) && !isOnVacation(e.id, date));
+                    const restingStaff = staff.filter(e => resting.includes(e.id) && !isOnVacation(e.id, date));
+                    const vacStaff = staff.filter(e => isOnVacation(e.id, date));
+                    
+                    if(working.length > 0 || restingStaff.length > 0 || vacStaff.length > 0) {
+                        html += `<div class="role-section" style="border-left-color: ${roles[role]}">`;
+                        html += `<div class="role-title" style="color: ${roles[role]}">${role}</div>`;
+                        html += `<div class="role-staff">`;
+                        
+                        working.forEach(e => {
+                            html += `<span class="staff-name">${e.name}</span>`;
+                        });
+                        restingStaff.forEach(e => {
+                            html += `<span class="staff-name staff-resting" title="Descanso programado">${e.name}</span>`;
+                        });
+                        vacStaff.forEach(e => {
+                            html += `<span class="staff-name" style="background: #fff3e0; color: #e65100; border-color: #ff9800">🏖️ ${e.name}</span>`;
+                        });
+                        
+                        html += `</div></div>`;
+                    }
+                });
+                
+                html += `</div>`;
+                cell.innerHTML = html;
             }
             return cell;
-        }
-
-        function createShiftBlock(emps, cls, isSat, vacEmps) {
-            if(emps.length === 0 && vacEmps.length === 0) return '';
-            const time = isSat ? `${config.schedules.satStart}-${config.schedules.satEnd}` : `${config.schedules.lvStart}-${config.schedules.lvEnd}`;
-            const names = emps.map(e => e.name).join(', ') || 'Nadie';
-            const badges = emps.map(e => `<span class="role-badge" style="background: ${roles[e.role]}; font-size: 0.6em; margin: 2px 2px 0 0; display: inline-block;">${e.role.substring(0,3)}</span>`).join('');
-            const title = cls === 'shift-1' ? 'Turno 1' : 'Turno 2';
-            const vacBadge = vacEmps.length ? `<span class="vacation-badge">🏖️ ${vacEmps.map(e => e.name.split(' ')[0]).join(', ')}</span>` : '';
-            
-            return `
-                <div class="shift-block ${cls}">
-                    <span class="shift-title">${title} ${vacBadge}</span>
-                    ${names}
-                    <span class="time-badge">⏰ ${time}</span>
-                    <div style="margin-top: 6px; line-height: 1.2;">${badges}</div>
-                </div>
-            `;
         }
 
         function captureSchedule() {
             const btn = event.target;
             btn.textContent = '⏳ Generando...';
-            
             html2canvas(document.getElementById('captureArea'), {
                 scale: 2,
                 backgroundColor: document.documentElement.getAttribute('data-theme') === 'dark' ? '#1e1e1e' : '#ffffff'
@@ -2520,11 +2111,11 @@
             const m = parseInt(document.getElementById('monthSelect').value);
             const y = parseInt(document.getElementById('yearSelect').value);
             const months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-            
-            let csv = 'Día,Fecha,Día Semana,Turno 1,Turno 2,Notas\n';
+            let csv = 'Día,Fecha,Día Semana';
+            Object.keys(roles).forEach(r => { if(getEmployeesByRole(r).length > 0) csv += `,${r}`; });
+            csv += ',Notas\n';
             
             const dim = new Date(y, m + 1, 0).getDate();
-            
             for(let day = 1; day <= dim; day++) {
                 const date = new Date(y, m, day);
                 const wd = date.getDay();
@@ -2532,20 +2123,17 @@
                 const dayName = date.toLocaleDateString('es-ES', {weekday: 'long'});
                 
                 if(wd === 0 || isHoliday(date)) {
-                    csv += `${day},${date.toLocaleDateString('es-ES')},${dayName},CERRADO,CERRADO,${config.notes[dateStr] || ''}\n`;
+                    csv += `${day},${date.toLocaleDateString('es-ES')},${dayName},CERRADO,,,,,${config.notes[dateStr] || ''}\n`;
                 } else {
-                    const wn = getWeek(date);
-                    const phase = Math.floor((wn - 1) / config.rotation.weeks) % 2;
-                    const r1 = (wd === config.rotation.rest1 && phase === 0) || (wd === config.rotation.rest2 && phase === 1);
-                    const r2 = (wd === config.rotation.rest2 && phase === 0) || (wd === config.rotation.rest1 && phase === 1);
-                    
-                    const t1 = config.employees.filter(e => e.shift === 1 && !isOnVacation(e.id, date));
-                    const t2 = config.employees.filter(e => e.shift === 2 && !isOnVacation(e.id, date));
-                    
-                    const t1Names = r1 ? 'LIBRE' : t1.map(e => e.name).join('; ');
-                    const t2Names = r2 ? 'LIBRE' : t2.map(e => e.name).join('; ');
-                    
-                    csv += `${day},${date.toLocaleDateString('es-ES')},${dayName},"${t1Names}","${t2Names}","${config.notes[dateStr] || ''}"\n`;
+                    const resting = getRestingEmployees(date);
+                    csv += `${day},${date.toLocaleDateString('es-ES')},${dayName}`;
+                    Object.keys(roles).forEach(role => {
+                        if(getEmployeesByRole(role).length === 0) return;
+                        const staff = getEmployeesByRole(role);
+                        const working = staff.filter(e => !resting.includes(e.id) && !isOnVacation(e.id, date));
+                        csv += `,"${working.map(e => e.name).join(', ')}"`;
+                    });
+                    csv += `,"${config.notes[dateStr] || ''}"\n`;
                 }
             }
             
@@ -2557,17 +2145,7 @@
             showToast('📊 Excel descargado');
         }
 
-        function getWeek(d) {
-            const dt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-            const dn = dt.getUTCDay() || 7;
-            dt.setUTCDate(dt.getUTCDate() + 4 - dn);
-            const ys = new Date(Date.UTC(dt.getUTCFullYear(),0,1));
-            return Math.ceil((((dt - ys) / 86400000) + 1)/7);
-        }
-
-        function save() {
-            localStorage.setItem('muroHorarioConfig', JSON.stringify(config));
-        }
+        function save() { localStorage.setItem('muroHorarioConfig', JSON.stringify(config)); }
 
         function exportConfig() {
             const data = JSON.stringify(config, null, 2);
@@ -2590,14 +2168,13 @@
                     if(data.employees) {
                         config = { ...config, ...data };
                         if(!config.vacations) config.vacations = [];
-                        if(!config.notes) config.notes = {};
-                        if(!config.colors) config.colors = { shift1: '#27ae60', shift2: '#2980b9' };
+                        if(!config.notes) config.notes = [];
+                        if(config.showStats === undefined) config.showStats = true;
+                        config.employees.forEach(e => delete e.shift);
                         save();
                         location.reload();
                     }
-                } catch(err) {
-                    showToast('❌ Error');
-                }
+                } catch(err) { showToast('❌ Error'); }
             };
             r.readAsText(f);
             e.target.value = '';
@@ -2620,9 +2197,7 @@
 
         window.addEventListener('resize', () => {
             setTimeout(() => {
-                if(document.getElementById('schedule').classList.contains('active')) {
-                    generateSchedule();
-                }
+                if(document.getElementById('schedule').classList.contains('active')) generateSchedule();
             }, 250);
         });
     </script>
